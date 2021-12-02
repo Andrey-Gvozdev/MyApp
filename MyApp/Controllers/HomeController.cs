@@ -43,5 +43,27 @@ namespace MyApp.Controllers
 
             return View(creative);
         }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var creative = await db.Creatives.FirstOrDefaultAsync(c => c.Id == id);
+            if (creative == null)
+                return NotFound();
+
+            return View(creative);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var movie = await db.Creatives.FindAsync(id);
+            db.Creatives.Remove(movie);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
     }
 }
