@@ -1,4 +1,27 @@
 ﻿@page
-@model MyApp.Views.Home.IndexModel
+@model IEnumerable<MyApp.Models.Creative>
 @{
 }
+<h2>Main Page</h2>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Content</th>
+    </tr>
+
+    @if(Model != null) foreach (var item in Model)
+    {
+    <tr>
+        <td>@item.Name</td>
+        <td>@item.Content</td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">Task</a> |
+            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+        </td>
+    </tr>
+    }
+</table>

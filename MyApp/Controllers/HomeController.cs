@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyApp.Data;
 
 namespace MyApp.Controllers
@@ -11,9 +12,9 @@ namespace MyApp.Controllers
         {
             db = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await db.Creatives.ToListAsync());
         }
     }
 }

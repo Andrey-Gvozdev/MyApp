@@ -1,6 +1,4 @@
-using MyApp;
-
-namespace MyProject
+namespace MyApp
 {
     public class Program
     {
