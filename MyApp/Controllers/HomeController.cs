@@ -31,5 +31,17 @@ namespace MyApp.Controllers
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var creative = await db.Creatives.FirstOrDefaultAsync(c => c.Id == id);
+            if (creative == null)
+                return NotFound();
+
+            return View(creative);
+        }
     }
 }
