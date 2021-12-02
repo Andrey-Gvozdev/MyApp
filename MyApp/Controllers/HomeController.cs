@@ -65,5 +65,24 @@ namespace MyApp.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var creative = await db.Creatives.FirstOrDefaultAsync(c => c.Id == id);
+                if (creative == null)
+                return NotFound();
+
+            return View(creative);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Creative creative)
+        {
+            db.Creatives.Update(creative);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
     }
 }
