@@ -12,6 +12,11 @@ namespace Infrastructure
             db = context;
         }
 
+        public IEnumerable<Creative> GetCreativeList()
+        {
+            return db.Creatives.ToList();
+        }
+
         public void Post(Creative creative)
         {
             db.Creatives.Add(creative);
