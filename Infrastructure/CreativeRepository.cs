@@ -7,9 +7,9 @@ namespace Infrastructure
     {
         private ApplicationDbContext db;
 
-        public CreativeRepository()
+        public CreativeRepository(ApplicationDbContext context)
         {
-            db = new ApplicationDbContext();
+            db = context;
         }
 
         public void Post(Creative creative)
