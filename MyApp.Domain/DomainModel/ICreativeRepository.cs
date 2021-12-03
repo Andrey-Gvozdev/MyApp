@@ -1,10 +1,10 @@
 ﻿namespace MyApp.Domain
 {
-    public class ICreativeRepository
+    public interface ICreativeRepository
     {
-        void Post(Creative creative) { }
-        void Get(int? creativeId) { }
-        void Patch(Creative creative) { }
-        void Delete(int? creativeId) { }
+        void Post(Creative creative);
+        Creative Get(int creativeId);
+        void Patch(Creative creative);
+        void Delete(int creativeId);
     }
 }
