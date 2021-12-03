@@ -1,6 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using MyApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace MyApp
 {
@@ -19,10 +17,6 @@ namespace MyApp
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddControllersWithViews();
-
-            services.AddRazorPages();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

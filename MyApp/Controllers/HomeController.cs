@@ -1,18 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyApp.Data;
-using MyApp.Models;
 
 namespace MyApp.Controllers
 {
     public class HomeController : Controller
     {
-        private ApplicationDbContext db;
-
-        public HomeController(ApplicationDbContext context)
-        {
-            db = context;
-        }
 
         public async Task<IActionResult> Index()
         {
