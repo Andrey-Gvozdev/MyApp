@@ -1,16 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyApp.Models;
+using MyApp.Domain;
 
-namespace MyApp.Data
+namespace Infrastructure
 {
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Creative> Creatives { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext (DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            //Database.EnsureDeleted();
             //Database.EnsureCreated();
         }
     }

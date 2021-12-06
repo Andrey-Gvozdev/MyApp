@@ -1,6 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using MyApp.Data;
 
 namespace MyApp
 {
@@ -15,14 +14,11 @@ namespace MyApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllersWithViews();
-
-            services.AddRazorPages();
+            services.AddControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,10 +37,7 @@ namespace MyApp
             
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

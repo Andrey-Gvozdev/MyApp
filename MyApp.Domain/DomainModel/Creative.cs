@@ -1,9 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-
-namespace MyApp.Models
+﻿namespace MyApp.Domain
 {
-    [Index(nameof(Name), IsUnique = true)]
     public class Creative
     {
         public int Id { get; set; }
