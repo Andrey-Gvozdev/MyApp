@@ -3,7 +3,7 @@ using MyApp.Domain;
 
 namespace Infrastructure
 {
-    internal class CreativeRepository : ICreativeRepository
+    public class CreativeRepository : ICreativeRepository
     {
         private ApplicationDbContext db;
 
@@ -12,30 +12,37 @@ namespace Infrastructure
             db = context;
         }
 
-        public void Post(Creative creative)
+        public async Task<IEnumerable<Creative>> GetCreativeListAsync()
+        {
+                var creatives = await db.Creatives.ToListAsync();
+            
+                return creatives;
+        }
+
+        public async Task Post(Creative creative)
         {
             db.Creatives.Add(creative);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public Creative Get(int creativeId)
+        public async Task<Creative> Get(int creativeId)
         {
-            return db.Creatives.Find(creativeId);
+            return await db.Creatives.FindAsync(creativeId);
         }
 
-        public void Patch(Creative creative)
+        public async void Patch(Creative creative)
         {
             db.Entry(creative).State = EntityState.Modified;
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void Delete(int creativeId)
+        public async void Delete(int creativeId)
         {
-            Creative creative = db.Creatives.Find(creativeId);
+            Creative creative = await db.Creatives.FindAsync(creativeId);
             if (creative != null)
             {
                 db.Creatives.Remove(creative);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
         }
     }
