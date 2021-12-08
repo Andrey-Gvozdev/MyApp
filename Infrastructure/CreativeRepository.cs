@@ -23,9 +23,9 @@ namespace Infrastructure
             await db.SaveChangesAsync();
         }
 
-        public ValueTask<Creative> Get(int creativeId)
+        public Task<Creative?> Get(int creativeId)
         {
-            return db.Creatives.FindAsync(creativeId);
+            return db.Creatives.FirstOrDefaultAsync(x => x.Id == creativeId);
         }
 
         public async Task<Creative> Patch(int creativeId, Creative creative)
