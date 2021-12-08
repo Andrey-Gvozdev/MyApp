@@ -14,7 +14,7 @@ namespace MyApp.Controllers
             creativeRepository = r;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[controller]/[action]")]
         public async Task<IEnumerable<Creative>> GetList()
         {
@@ -25,9 +25,9 @@ namespace MyApp.Controllers
         [Route("[controller]/[action]")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Create(Creative creative)
+        public async Task<IActionResult> Create(Creative creative)
         {
-            creativeRepository.Post(creative);
+            await creativeRepository.Post(creative);
 
             return CreatedAtAction("Create", new { id = creative.Id }, creative);
         }
@@ -46,7 +46,7 @@ namespace MyApp.Controllers
             return Ok(creative);
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("[controller]/[action]")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Creative))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -66,7 +66,6 @@ namespace MyApp.Controllers
         [Route("[controller]/[action]")]
         [ProducesResponseType(StatusCodes.Status205ResetContent, Type = typeof(Creative))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        
         public IActionResult Update(int creativeId, Creative creative)
         {
             creativeRepository.Patch(creativeId, creative);

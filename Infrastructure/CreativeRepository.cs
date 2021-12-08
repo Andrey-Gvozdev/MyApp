@@ -20,7 +20,7 @@ namespace Infrastructure
         public async Task Post(Creative creative)
         {
             await db.Creatives.AddAsync(creative);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
         public Creative Get(int creativeId)
