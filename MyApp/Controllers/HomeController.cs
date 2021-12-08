@@ -67,9 +67,12 @@ namespace MyApp.Controllers
         [Route("[controller]/[action]")]
         [ProducesResponseType(StatusCodes.Status205ResetContent, Type = typeof(Creative))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Update(int creativeId, Creative creative)
+        public async Task<IActionResult> Update(int creativeId, Creative creative)
         {
-            creativeRepository.Patch(creativeId, creative);
+            var item = await creativeRepository.Patch(creativeId, creative);
+            
+            if(item == null)
+                return NotFound();
 
             return Ok(creative);
         }

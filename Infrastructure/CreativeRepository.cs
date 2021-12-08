@@ -28,16 +28,18 @@ namespace Infrastructure
             return await db.Creatives.FindAsync(creativeId);
         }
 
-        public void Patch(int creativeId, Creative creative)
+        public async Task<Creative> Patch(int creativeId, Creative creative)
         {
-            var current = db.Creatives.Find(creativeId);
+            var current = await db.Creatives.FindAsync(creativeId);
             if (current == null)
-                return;
+                return current;
             
             creative.Id = current.Id;
 
             db.Entry(current).CurrentValues.SetValues(creative);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
+
+            return current;
         }
 
         public async void Delete(int creativeId)
