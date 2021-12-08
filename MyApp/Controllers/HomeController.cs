@@ -36,9 +36,9 @@ namespace MyApp.Controllers
         [Route("[controller]/[action]")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Creative))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int crteativeId)
+        public async Task<IActionResult> GetById(int creativeId)
         {
-            var creative = await creativeRepository.Get(crteativeId);
+            var creative = await creativeRepository.Get(creativeId);
             if (creative == null)
             {
                 return NotFound();
@@ -47,21 +47,21 @@ namespace MyApp.Controllers
             return Ok(creative);
         }
 
-        /*[HttpDelete]
+        [HttpDelete]
         [Route("[controller]/[action]")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Creative))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int creativeId)
+        public async Task<IActionResult> Delete(int creativeId)
         {
-            Creative creative = creativeRepository.Get(creativeId);
+            var creative = await creativeRepository.Get(creativeId);
 
             if (creative == null)
                 return NotFound();
 
-            creativeRepository.Delete(creativeId);
+            await creativeRepository.Delete(creative);
 
-            return Ok(creative);
-        }*/
+            return Ok();
+        }
 
         [HttpPut]
         [Route("[controller]/[action]")]

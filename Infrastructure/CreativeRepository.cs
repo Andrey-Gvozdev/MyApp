@@ -42,14 +42,10 @@ namespace Infrastructure
             return current;
         }
 
-        public async void Delete(int creativeId)
+        public async Task Delete(Creative creative)
         {
-            Creative creative = await db.Creatives.FindAsync(creativeId);
-            if (creative != null)
-            {
-                db.Creatives.Remove(creative);
-                db.SaveChanges();
-            }
+            db.Creatives.Remove(creative);
+            await db.SaveChangesAsync();
         }
     }
 }

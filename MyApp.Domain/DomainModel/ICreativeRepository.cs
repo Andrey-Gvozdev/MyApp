@@ -6,6 +6,6 @@
         Task Post(Creative creative);
         Task<Creative> Get(int creativeId);
         Task<Creative> Patch(int creativeId, Creative creative);
-        void Delete(int creativeId);
+        Task Delete(Creative creative);
     }
 }
