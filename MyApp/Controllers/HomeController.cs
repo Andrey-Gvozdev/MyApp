@@ -16,9 +16,9 @@ namespace MyApp.Controllers
 
         [HttpGet]
         [Route("[controller]/[action]")]
-        public async Task<IEnumerable<Creative>> GetList()
+        public Task<List<Creative>> GetList()
         {
-            return await creativeRepository.GetCreativeListAsync();
+            return creativeRepository.GetCreativeListAsync();
         }
 
         [HttpPost]

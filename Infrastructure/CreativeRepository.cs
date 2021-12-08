@@ -12,9 +12,9 @@ namespace Infrastructure
             db = context;
         }
 
-        public async Task<IEnumerable<Creative>> GetCreativeListAsync()
+        public Task<List<Creative>> GetCreativeListAsync()
         {
-            return await db.Creatives.ToListAsync();
+            return db.Creatives.ToListAsync();
         }
 
         public async Task Post(Creative creative)
@@ -23,9 +23,9 @@ namespace Infrastructure
             await db.SaveChangesAsync();
         }
 
-        public async Task<Creative> Get(int creativeId)
+        public ValueTask<Creative> Get(int creativeId)
         {
-            return await db.Creatives.FindAsync(creativeId);
+            return db.Creatives.FindAsync(creativeId);
         }
 
         public async Task<Creative> Patch(int creativeId, Creative creative)
