@@ -21,7 +21,10 @@ namespace MyApp
 
             services.AddControllers();
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+            {
+                options.EnableAnnotations();
+            });
 
             services.AddTransient<ICreativeRepository, CreativeRepository>();
         }

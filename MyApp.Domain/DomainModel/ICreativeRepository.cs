@@ -2,10 +2,10 @@
 {
     public interface ICreativeRepository
     {
-        Task<IEnumerable<Creative>> GetCreativeListAsync();
+        Task<List<Creative>> GetCreativeListAsync();
         Task Post(Creative creative);
         Task<Creative> Get(int creativeId);
-        void Patch(Creative creative);
-        void Delete(int creativeId);
+        Task<Creative> Patch(int creativeId, Creative creative);
+        Task Delete(Creative creative);
     }
 }
