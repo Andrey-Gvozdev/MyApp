@@ -23,9 +23,9 @@ namespace Infrastructure
             await db.SaveChangesAsync();
         }
 
-        public Creative Get(int creativeId)
+        public async Task<Creative> Get(int creativeId)
         {
-            return db.Creatives.Find(creativeId);
+            return await db.Creatives.FindAsync(creativeId);
         }
 
         public void Patch(int creativeId, Creative creative)

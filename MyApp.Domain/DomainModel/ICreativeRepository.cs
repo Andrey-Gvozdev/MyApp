@@ -4,7 +4,7 @@
     {
         Task<IEnumerable<Creative>> GetCreativeListAsync();
         Task Post(Creative creative);
-        Creative Get(int creativeId);
+        Task<Creative> Get(int creativeId);
         void Patch(int creativeId, Creative creative);
         void Delete(int creativeId);
     }
