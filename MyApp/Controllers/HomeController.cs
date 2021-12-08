@@ -25,23 +25,51 @@ namespace MyApp.Controllers
         [Route("[controller]/[action]")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Create(Creative item)
+        public IActionResult Create(Creative creative)
         {
-            creativeRepository.Post(item);
+            creativeRepository.Post(creative);
 
-            return CreatedAtAction("Create", new { id = item.Id }, item);
+            return CreatedAtAction("Create", new { id = creative.Id }, creative);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Creative))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public IActionResult GetById(int crteativeId)
         {
-            var creative = creativeRepository.Get(id);
+            var creative = creativeRepository.Get(crteativeId);
             if (creative == null)
             {
                 return NotFound();
             }
+
+            return Ok(creative);
+        }
+
+        [HttpPost]
+        [Route("[controller]/[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Creative))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Delete(int creativeId)
+        {
+            Creative creative = creativeRepository.Get(creativeId);
+
+            if (creative == null)
+                return NotFound();
+
+            creativeRepository.Delete(creativeId);
+
+            return Ok(creative);
+        }
+
+        [HttpPut]
+        [Route("[controller]/[action]")]
+        [ProducesResponseType(StatusCodes.Status205ResetContent, Type = typeof(Creative))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        
+        public IActionResult Update(int creativeId, Creative creative)
+        {
+            creativeRepository.Patch(creativeId, creative);
 
             return Ok(creative);
         }

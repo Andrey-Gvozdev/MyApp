@@ -14,26 +14,30 @@ namespace Infrastructure
 
         public async Task<IEnumerable<Creative>> GetCreativeListAsync()
         {
-                var creatives = await db.Creatives.ToListAsync();
-            
-                return creatives;
+            return await db.Creatives.ToListAsync();
         }
 
         public async Task Post(Creative creative)
         {
-            db.Creatives.Add(creative);
-            await db.SaveChangesAsync();
+            await db.Creatives.AddAsync(creative);
+            db.SaveChanges();
         }
 
-        public async Task<Creative> Get(int creativeId)
+        public Creative Get(int creativeId)
         {
-            return await db.Creatives.FindAsync(creativeId);
+            return db.Creatives.Find(creativeId);
         }
 
-        public async void Patch(Creative creative)
+        public void Patch(int creativeId, Creative creative)
         {
-            db.Entry(creative).State = EntityState.Modified;
-            await db.SaveChangesAsync();
+            var current = db.Creatives.Find(creativeId);
+            if (current == null)
+                return;
+            
+            creative.Id = current.Id;
+
+            db.Entry(current).CurrentValues.SetValues(creative);
+            db.SaveChanges();
         }
 
         public async void Delete(int creativeId)
@@ -42,7 +46,7 @@ namespace Infrastructure
             if (creative != null)
             {
                 db.Creatives.Remove(creative);
-                await db.SaveChangesAsync();
+                db.SaveChanges();
             }
         }
     }
