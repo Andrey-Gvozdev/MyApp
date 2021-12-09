@@ -1,6 +1,6 @@
 ﻿using Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using MyApp.Domain;
+using MyApp.Domain.DomainModel;
 
 namespace MyApp
 {
@@ -26,7 +26,7 @@ namespace MyApp
                 options.EnableAnnotations();
             });
 
-            services.AddTransient<ICreativeRepository, CreativeRepository>();
+            services.AddTransient<IPageRepository, PageRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

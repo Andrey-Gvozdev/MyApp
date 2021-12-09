@@ -1,7 +1,7 @@
 ﻿namespace MyApp.Domain;
 using Swashbuckle.AspNetCore.Annotations;
 
-    public class Creative
+    public abstract class Creative
     {
         [SwaggerSchema(ReadOnly =true)]
         public int Id { get; set; }

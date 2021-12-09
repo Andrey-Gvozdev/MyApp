@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyApp.Domain;
+using MyApp.Domain.DomainModel;
 
 namespace MyApp.Controllers
 {
@@ -8,73 +8,73 @@ namespace MyApp.Controllers
     [Produces("application/json")]
     public class HomeController : ControllerBase
     {
-        ICreativeRepository creativeRepository;
-        public HomeController(ICreativeRepository r)
+        IPageRepository pageRepository;
+        public HomeController(IPageRepository r)
         {
-            creativeRepository = r;
+            pageRepository = r;
         }
 
         [HttpGet]
         [Route("[controller]/[action]")]
-        public async Task<List<Creative>> GetList()
+        public async Task<List<Page>> GetPageList()
         {
-            return await creativeRepository.GetCreativeListAsync();
+            return await pageRepository.GetPageListAsync();
         }
 
         [HttpPost]
         [Route("[controller]/[action]")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create(Creative creative)
+        public async Task<IActionResult> CreatePage(Page page)
         {
-            await creativeRepository.Post(creative);
+            await pageRepository.Post(page);
 
-            return CreatedAtAction("Create", new { id = creative.Id }, creative);
+            return Ok(page);
         }
 
         [HttpGet]
         [Route("[controller]/[action]")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Creative))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Page))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int creativeId)
+        public async Task<IActionResult> GetPagesById(int pageId)
         {
-            var creative = await creativeRepository.Get(creativeId);
-            if (creative == null)
+            var page = await pageRepository.Get(pageId);
+            if (page == null)
             {
                 return NotFound();
             }
 
-            return Ok(creative);
+            return Ok(page);
         }
 
         [HttpDelete]
         [Route("[controller]/[action]")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Creative))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Page))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(int creativeId)
+        public async Task<IActionResult> DeletePage(int pageId)
         {
-            var creative = await creativeRepository.Get(creativeId);
+            var page = await pageRepository.Get(pageId);
 
-            if (creative == null)
+            if (page == null)
                 return NotFound();
 
-            await creativeRepository.Delete(creative);
+            await pageRepository.Delete(page);
 
             return Ok();
         }
 
         [HttpPut]
         [Route("[controller]/[action]")]
-        [ProducesResponseType(StatusCodes.Status205ResetContent, Type = typeof(Creative))]
+        [ProducesResponseType(StatusCodes.Status205ResetContent, Type = typeof(Page))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(int creativeId, Creative creative)
+        public async Task<IActionResult> UpdatePage(int pageId, Page page)
         {
-            var item = await creativeRepository.Patch(creativeId, creative);
+            var item = await pageRepository.Patch(pageId, page);
             
             if(item == null)
                 return NotFound();
 
-            return Ok(creative);
+            return Ok(page);
         }
     }
 }
