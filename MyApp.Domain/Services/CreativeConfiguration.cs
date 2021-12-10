@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class CreativeConfiguration : IEntityTypeConfiguration<Creative>
+public class CreativeConfiguration : IEntityTypeConfiguration<Creative>
     {
         public void Configure(EntityTypeBuilder<Creative> builder)
         {

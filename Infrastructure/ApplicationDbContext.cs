@@ -19,6 +19,7 @@ using MyApp.Domain.Services;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new CreativeConfiguration());
+            new CreativeConfiguration().Configure(modelBuilder.Entity<Creative>());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CreativeConfiguration).Assembly);
         }
     }
