@@ -7,5 +7,6 @@
         Task<Page> Get(int pageId);
         Task<Page> Patch(int pageId, Page page);
         Task Delete(Page page);
+        string HtmlCorrector(string content);
     }
 }

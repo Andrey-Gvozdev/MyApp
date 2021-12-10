@@ -27,6 +27,7 @@ namespace MyApp.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreatePage(Page page)
         {
+            page.Content = pageRepository.HtmlCorrector(page.Content);
             await pageRepository.Post(page);
 
             return Ok(page);
