@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyApp.Domain;
 using MyApp.Domain.DomainModel;
+using MyApp.Domain.Services;
 
 namespace Infrastructure
 {
@@ -14,6 +15,11 @@ namespace Infrastructure
         {
             //Database.EnsureDeleted();
             //Database.EnsureCreated();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new CreativeConfiguration());
         }
     }
 }
