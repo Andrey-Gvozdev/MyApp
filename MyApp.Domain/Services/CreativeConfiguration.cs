@@ -1,8 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace MyApp.Domain.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MyApp.Domain.Services
-{
     public class CreativeConfiguration : IEntityTypeConfiguration<Creative>
     {
         public void Configure(EntityTypeBuilder<Creative> builder)
@@ -11,4 +10,3 @@ namespace MyApp.Domain.Services
             builder.HasIndex(p => p.Name).IsUnique();
         }
     }
-}

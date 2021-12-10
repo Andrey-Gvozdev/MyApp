@@ -1,20 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using MyApp.Domain;
 using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
 
-namespace Infrastructure
-{
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Creative> Creatives { get; set; }
+
         public DbSet<Page> Pages { get; set; }
 
-        public ApplicationDbContext (DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            //Database.EnsureDeleted();
-            //Database.EnsureCreated();
+            // Database.EnsureDeleted();
+            // Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,4 +22,3 @@ namespace Infrastructure
             modelBuilder.ApplyConfiguration(new CreativeConfiguration());
         }
     }
-}

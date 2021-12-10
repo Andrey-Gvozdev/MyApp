@@ -1,14 +1,13 @@
-﻿using Infrastructure;
+﻿namespace MyApp;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.DomainModel;
 
-namespace MyApp
-{
     public class Startup
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -17,7 +16,7 @@ namespace MyApp
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    this.Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
 
@@ -47,11 +46,9 @@ namespace MyApp
 
             app.UseRouting();
 
-            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
         }
     }
-}

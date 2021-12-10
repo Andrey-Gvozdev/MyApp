@@ -1,6 +1,5 @@
-﻿namespace MyApp.Domain.DomainModel
-{
+﻿namespace MyApp.Domain.DomainModel;
+
     public class Page : Creative
     {
     }
-}
