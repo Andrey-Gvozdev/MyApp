@@ -21,5 +21,8 @@ dotnet_diagnostic.CS8603.severity = none
 # CS8604: Possible null reference argument.
 dotnet_diagnostic.CS8604.severity = none
 
+# CS8601: Possible null reference assignment.
+dotnet_diagnostic.CS8601.severity = silent
+
 [*.{cs,vb}]
 indent_style=space

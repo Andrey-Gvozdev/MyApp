@@ -1,16 +1,7 @@
-﻿namespace MyApp.Domain.DomainModel;
+﻿using MyApp.Domain.DomainModel;
 
-    public interface IPageRepository
-    {
-        Task<List<Page>> GetPageListAsync();
+namespace MyApp.Domain;
 
-        Task Post(Page page);
-
-        Task<Page> Get(int pageId);
-
-        Task<Page> Patch(int pageId, Page page);
-
-        Task Delete(Page page);
-
-        string HtmlCorrector(string content);
-    }
+public interface IPageRepository : ICreativeRepository
+{
+}

@@ -1,5 +1,6 @@
 ﻿namespace MyApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using MyApp.Domain;
 using MyApp.Domain.DomainModel;
 
     [ApiController]
@@ -7,27 +8,26 @@ using MyApp.Domain.DomainModel;
     [Produces("application/json")]
     public class HomeController : ControllerBase
     {
-        private readonly IPageRepository pageRepository;
+        private readonly ICreativeRepository pageRepository;
 
-        public HomeController(IPageRepository r)
+        public HomeController(ICreativeRepository repository)
         {
-            this.pageRepository = r;
+            this.pageRepository = repository;
         }
 
         [HttpGet]
         [Route("[controller]/[action]")]
-        public async Task<List<Page>> GetPageList()
+        public async Task<List<Creative>> GetList()
         {
-            return await this.pageRepository.GetPageListAsync();
+            return await this.pageRepository.GetListAsync();
         }
 
         [HttpPost]
         [Route("[controller]/[action]")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreatePage(Page page)
+        public async Task<IActionResult> Create(Page page)
         {
-            page.Content = this.pageRepository.HtmlCorrector(page.Content);
             await this.pageRepository.Post(page);
 
             return this.Ok(page);
@@ -37,7 +37,7 @@ using MyApp.Domain.DomainModel;
         [Route("[controller]/[action]")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Page))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetPagesById(int pageId)
+        public async Task<IActionResult> GetById(int pageId)
         {
             var page = await this.pageRepository.Get(pageId);
             if (page == null)
@@ -52,7 +52,7 @@ using MyApp.Domain.DomainModel;
         [Route("[controller]/[action]")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Page))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeletePage(int pageId)
+        public async Task<IActionResult> Delete(int pageId)
         {
             var page = await this.pageRepository.Get(pageId);
 
@@ -70,7 +70,7 @@ using MyApp.Domain.DomainModel;
         [Route("[controller]/[action]")]
         [ProducesResponseType(StatusCodes.Status205ResetContent, Type = typeof(Page))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdatePage(int pageId, Page page)
+        public async Task<IActionResult> Update(int pageId, Page page)
         {
             var item = await this.pageRepository.Patch(pageId, page);
 

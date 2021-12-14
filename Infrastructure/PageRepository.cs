@@ -1,95 +1,54 @@
 ﻿namespace Infrastructure;
-using HtmlAgilityPack;
 using Microsoft.EntityFrameworkCore;
+using MyApp.Domain;
 using MyApp.Domain.DomainModel;
 
-    public class PageRepository : IPageRepository
+public class PageRepository : IPageRepository
+{
+    private readonly ApplicationDbContext db;
+
+    public PageRepository(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext db;
+        this.db = context;
+    }
 
-        public PageRepository(ApplicationDbContext context)
+    public Task<List<Creative>> GetListAsync()
+    {
+        return this.db.Pages.OfType<Creative>().ToListAsync();
+    }
+
+    public async Task Post(Creative creative)
+    {
+        Page page = (Page)creative;
+        await this.db.Pages.AddAsync(page);
+        await this.db.SaveChangesAsync();
+    }
+
+    public Task<Creative> Get(int pageId)
+    {
+        return this.db.Pages.OfType<Creative>().FirstOrDefaultAsync(x => x.Id == pageId);
+    }
+
+    public async Task<Creative> Patch(int pageId, Creative page)
+    {
+        var current = await this.db.Pages.FindAsync(pageId);
+        if (current == null)
         {
-            this.db = context;
-        }
-
-        public Task<List<Page>> GetPageListAsync()
-        {
-            return this.db.Pages.ToListAsync();
-        }
-
-        public async Task Post(Page page)
-        {
-            await this.db.Pages.AddAsync(page);
-            await this.db.SaveChangesAsync();
-        }
-
-        public Task<Page> Get(int pageId)
-        {
-            return this.db.Pages.FirstOrDefaultAsync(x => x.Id == pageId);
-        }
-
-        public async Task<Page> Patch(int pageId, Page page)
-        {
-            var current = await this.db.Pages.FindAsync(pageId);
-            if (current == null)
-            {
-                return current;
-            }
-
-            page.Id = current.Id;
-
-            this.db.Entry(current).CurrentValues.SetValues(page);
-            await this.db.SaveChangesAsync();
-
             return current;
         }
 
-        public async Task Delete(Page page)
-        {
-            this.db.Pages.Remove(page);
-            await this.db.SaveChangesAsync();
-        }
+        page.Id = current.Id;
 
-        public string HtmlCorrector(string content)
-        {
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(content);
-            string res;
+        this.db.Entry(current).CurrentValues.SetValues(page);
+        await this.db.SaveChangesAsync();
 
-            content = content.Replace("<!DOCTYPE html>", string.Empty);
-
-            var htmlHtml = htmlDoc.DocumentNode.SelectSingleNode("//html");
-
-            var htmlHead = htmlDoc.DocumentNode.SelectSingleNode("//head");
-
-            var htmlBody = htmlDoc.DocumentNode.SelectSingleNode("//body");
-
-            if (htmlHtml == null)
-            {
-                if (htmlHead == null && htmlBody == null)
-                {
-                    res = "<!DOCTYPE html>\n" + "<html>\n" + "<head></head>\n" + "<body>\n" + content + "\n</body>" + "\n</html>";
-                }
-                else
-                {
-                    if (htmlHead == null)
-                    {
-                        htmlHead = htmlDoc.CreateElement("head");
-                    }
-
-                    if (htmlBody == null)
-                    {
-                        htmlBody = htmlDoc.CreateElement("body");
-                    }
-
-                    res = "<!DOCTYPE html>\n" + "<html>\n" + htmlHead.OuterHtml + "\n" + htmlBody.OuterHtml + "\n</html>";
-                }
-            }
-            else
-            {
-                res = "<!DOCTYPE html>\n" + htmlHtml.OuterHtml;
-            }
-
-            return res;
-        }
+        return current;
     }
+
+    public async Task Delete(Creative creative)
+    {
+        Page page = (Page)creative;
+        this.db.Pages.Remove(page);
+        await this.db.SaveChangesAsync();
+    }
+}
