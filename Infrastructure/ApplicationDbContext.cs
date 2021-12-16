@@ -4,7 +4,6 @@ using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
 
 namespace Infrastructure;
-
 public class ApplicationDbContext : DbContext
 {
     public DbSet<Creative> Creatives { get; set; }
@@ -14,8 +13,6 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
-        // Database.EnsureDeleted();
-        // Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,7 +20,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CreativeConfiguration).Assembly);
         modelBuilder.Entity<Creative>()
             .HasDiscriminator()
-            .HasValue<Creative>("Creative")
             .HasValue<Page>("Page");
     }
 }

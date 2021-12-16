@@ -1,8 +1,8 @@
-﻿namespace Infrastructure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MyApp.Domain;
 using MyApp.Domain.DomainModel;
 
+namespace Infrastructure;
 public class PageRepository : IPageRepository
 {
     private readonly ApplicationDbContext db;
@@ -17,11 +17,26 @@ public class PageRepository : IPageRepository
         return this.db.Pages.OfType<Creative>().ToListAsync();
     }
 
-    public async Task Post(Creative creative)
+    public async Task<Creative> Post(Creative creative)
     {
-        Page page = (Page)creative;
+        Page? page = (Page)creative;
+        if (page.Name == null)
+        {
+            return page;
+        }
+
         await this.db.Pages.AddAsync(page);
-        await this.db.SaveChangesAsync();
+
+        try
+        {
+            await this.db.SaveChangesAsync();
+            return page;
+        }
+        catch
+        {
+            page = null;
+            return page;
+        }
     }
 
     public Task<Creative> Get(int pageId)
@@ -29,20 +44,28 @@ public class PageRepository : IPageRepository
         return this.db.Pages.OfType<Creative>().FirstOrDefaultAsync(x => x.Id == pageId);
     }
 
-    public async Task<Creative> Patch(int pageId, Creative page)
+    public async Task<Creative> Patch(Creative oldPage, Creative? page)
     {
-        var current = await this.db.Pages.FindAsync(pageId);
-        if (current == null)
+        if (page == null || page.Name == null)
         {
-            return current;
+            return page;
         }
+        else
+        {
+            page.Id = oldPage.Id;
 
-        page.Id = current.Id;
-
-        this.db.Entry(current).CurrentValues.SetValues(page);
-        await this.db.SaveChangesAsync();
-
-        return current;
+            this.db.Entry(oldPage).CurrentValues.SetValues(page);
+            try
+            {
+                await this.db.SaveChangesAsync();
+                return page;
+            }
+            catch
+            {
+                page = null;
+                return page;
+            }
+        }
     }
 
     public async Task Delete(Creative creative)

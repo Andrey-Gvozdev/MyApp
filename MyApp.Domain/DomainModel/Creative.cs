@@ -1,6 +1,6 @@
-﻿namespace MyApp.Domain;
-using Swashbuckle.AspNetCore.Annotations;
+﻿using Swashbuckle.AspNetCore.Annotations;
 
+namespace MyApp.Domain;
 public abstract class Creative
 {
     private string name;
@@ -14,7 +14,7 @@ public abstract class Creative
         get { return this.content; }
     }
 
-    public string Name
+    public string? Name
     {
         get { return this.name; }
         set { this.SetName(value); }
@@ -28,17 +28,13 @@ public abstract class Creative
 
     private void SetName(string name)
     {
-        if (name.Length > 30)
+        if (name.Length > 30 || name == string.Empty)
         {
-            // ToDo "Name field must be less than 30 characters!"
-        }
-        else if (name != null || name != string.Empty)
-        {
-            this.name = name;
+            return;
         }
         else
         {
-            // ToDo "Name field is empty!"
+            this.name = name;
         }
     }
 }
