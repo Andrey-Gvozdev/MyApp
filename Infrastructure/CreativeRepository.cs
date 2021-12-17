@@ -3,11 +3,11 @@ using MyApp.Domain;
 using MyApp.Domain.DomainModel;
 
 namespace Infrastructure;
-public class PageRepository : IPageRepository
+public class CreativeRepository : ICreativeRepository
 {
     private readonly ApplicationDbContext db;
 
-    public PageRepository(ApplicationDbContext context)
+    public CreativeRepository(ApplicationDbContext context)
     {
         this.db = context;
     }
@@ -17,7 +17,7 @@ public class PageRepository : IPageRepository
         return this.db.Pages.OfType<Creative>().ToListAsync();
     }
 
-    public async Task<Creative> Post(Creative creative)
+    public async Task<Creative> Create(Creative creative)
     {
         Page? page = (Page)creative;
         if (page.Name == null)
@@ -39,31 +39,31 @@ public class PageRepository : IPageRepository
         }
     }
 
-    public Task<Creative> Get(int pageId)
+    public Task<Creative> Get(int creativeId)
     {
-        return this.db.Pages.OfType<Creative>().FirstOrDefaultAsync(x => x.Id == pageId);
+        return this.db.Pages.OfType<Creative>().FirstOrDefaultAsync(x => x.Id == creativeId);
     }
 
-    public async Task<Creative> Patch(Creative oldPage, Creative? page)
+    public async Task<Creative> Update(Creative oldPage, Creative? creative)
     {
-        if (page == null || page.Name == null)
+        if (creative == null || creative.Name == null)
         {
-            return page;
+            return creative;
         }
         else
         {
-            page.Id = oldPage.Id;
+            creative.Id = oldPage.Id;
 
-            this.db.Entry(oldPage).CurrentValues.SetValues(page);
+            this.db.Entry(oldPage).CurrentValues.SetValues(creative);
             try
             {
                 await this.db.SaveChangesAsync();
-                return page;
+                return creative;
             }
             catch
             {
-                page = null;
-                return page;
+                creative = null;
+                return creative;
             }
         }
     }

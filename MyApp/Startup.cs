@@ -25,7 +25,7 @@ public class Startup
             options.EnableAnnotations();
         });
 
-        services.AddTransient<ICreativeRepository, PageRepository>();
+        services.AddTransient<ICreativeRepository, CreativeRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

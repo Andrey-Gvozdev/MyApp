@@ -28,7 +28,7 @@ public class HomeController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create(Page page)
     {
-        var checker = await this.pageRepository.Post(page);
+        var checker = await this.pageRepository.Create(page);
 
         if (page.Name == null)
         {
@@ -94,7 +94,7 @@ public class HomeController : ControllerBase
             return this.BadRequest("Name field must be less than 30 characters and can't be empty");
         }
 
-        var item = await this.pageRepository.Patch(oldPage, page);
+        var item = await this.pageRepository.Update(oldPage, page);
 
         return item == null ? this.BadRequest("This name is already taken!") : this.Ok(page);
     }
