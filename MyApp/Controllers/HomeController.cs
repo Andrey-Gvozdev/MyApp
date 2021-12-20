@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyApp.Domain;
 using MyApp.Domain.DomainModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Controllers;
 [ApiController]
@@ -30,14 +31,9 @@ public class HomeController : ControllerBase
     {
         var checker = await this.pageRepository.Create(page);
 
-        if (page.Name == null)
+        if (!this.ModelState.IsValid)
         {
-            return this.BadRequest("Name field must be less than 30 characters and can't be empty!");
-        }
-
-        if (checker == null)
-        {
-            return this.BadRequest("This name is already taken!");
+            return this.BadRequest(this.ModelState);
         }
 
         return this.Ok(page);
@@ -91,7 +87,9 @@ public class HomeController : ControllerBase
 
         if (page.Name == null)
         {
-            return this.BadRequest("Name field must be less than 30 characters and can't be empty");
+            // return this.BadRequest("Name field must be less than 30 characters and can't be empty");
+            throw new ValidationException("Name field must be less than 30 characters and can't be empty!");
+            return this.BadRequest();
         }
 
         var item = await this.pageRepository.Update(oldPage, page);
