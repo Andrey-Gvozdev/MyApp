@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyApp.Domain;
 using MyApp.Domain.DomainModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Controllers;
 [ApiController]
@@ -25,11 +24,16 @@ public class HomeController : ControllerBase
 
     [HttpPost]
     [Route("[controller]/[action]")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create(Page page)
     {
-        var checker = await this.pageRepository.Create(page);
+        try
+        {
+            await this.pageRepository.Create(page);
+        }
+        catch
+        {
+            return this.BadRequest("This name is already taken");
+        }
 
         if (!this.ModelState.IsValid)
         {
@@ -41,14 +45,13 @@ public class HomeController : ControllerBase
 
     [HttpGet]
     [Route("[controller]/[action]")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Page))]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int pageId)
     {
         var page = await this.pageRepository.Get(pageId);
+
         if (page == null)
         {
-            return this.NotFound();
+            return this.NotFound($"Page vith id: {pageId} not found");
         }
 
         return this.Ok(page);
@@ -56,15 +59,13 @@ public class HomeController : ControllerBase
 
     [HttpDelete]
     [Route("[controller]/[action]")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Page))]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int pageId)
     {
         var page = await this.pageRepository.Get(pageId);
 
         if (page == null)
         {
-            return this.NotFound();
+            return this.NotFound($"Page vith id: {pageId} not found");
         }
 
         await this.pageRepository.Delete(page);
@@ -74,26 +75,29 @@ public class HomeController : ControllerBase
 
     [HttpPut]
     [Route("[controller]/[action]")]
-    [ProducesResponseType(StatusCodes.Status205ResetContent, Type = typeof(Page))]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int pageId, Page page)
     {
         var oldPage = await this.pageRepository.Get(pageId);
 
         if (oldPage == null)
         {
-            return this.NotFound();
+            return this.NotFound($"Page vith id: {pageId} not found");
         }
 
-        if (page.Name == null)
+        try
         {
-            // return this.BadRequest("Name field must be less than 30 characters and can't be empty");
-            throw new ValidationException("Name field must be less than 30 characters and can't be empty!");
-            return this.BadRequest();
+            await this.pageRepository.Update(oldPage, page);
+        }
+        catch
+        {
+            return this.BadRequest("This name is already taken");
         }
 
-        var item = await this.pageRepository.Update(oldPage, page);
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest(this.ModelState);
+        }
 
-        return item == null ? this.BadRequest("This name is already taken!") : this.Ok(page);
+        return this.Ok(page);
     }
 }

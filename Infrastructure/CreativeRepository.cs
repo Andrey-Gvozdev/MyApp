@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using MyApp.Domain;
 using MyApp.Domain.DomainModel;
 
@@ -20,23 +21,11 @@ public class CreativeRepository : ICreativeRepository
     public async Task<Creative> Create(Creative creative)
     {
         Page? page = (Page)creative;
-        if (page.Name == null)
-        {
-            return page;
-        }
 
         await this.db.Pages.AddAsync(page);
+        await this.db.SaveChangesAsync();
 
-        try
-        {
-            await this.db.SaveChangesAsync();
-            return page;
-        }
-        catch
-        {
-            page = null;
-            return page;
-        }
+        return page;
     }
 
     public Task<Creative> Get(int creativeId)
@@ -44,28 +33,14 @@ public class CreativeRepository : ICreativeRepository
         return this.db.Pages.OfType<Creative>().FirstOrDefaultAsync(x => x.Id == creativeId);
     }
 
-    public async Task<Creative> Update(Creative oldPage, Creative? creative)
+    public async Task<Creative> Update(Creative oldPage, Creative creative)
     {
-        if (creative == null || creative.Name == null)
-        {
-            return creative;
-        }
-        else
-        {
-            creative.Id = oldPage.Id;
+        creative.Id = oldPage.Id;
 
-            this.db.Entry(oldPage).CurrentValues.SetValues(creative);
-            try
-            {
-                await this.db.SaveChangesAsync();
-                return creative;
-            }
-            catch
-            {
-                creative = null;
-                return creative;
-            }
-        }
+        this.db.Entry(oldPage).CurrentValues.SetValues(creative);
+        await this.db.SaveChangesAsync();
+
+        return creative;
     }
 
     public async Task Delete(Creative creative)
