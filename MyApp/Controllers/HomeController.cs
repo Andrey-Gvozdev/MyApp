@@ -5,7 +5,7 @@ using MyApp.Domain.Services;
 
 namespace MyApp.Controllers;
 [ApiController]
-[Route("api")]
+[Route("api/[controller]/[action]")]
 [Produces("application/json")]
 public class HomeController : ControllerBase
 {
@@ -19,14 +19,12 @@ public class HomeController : ControllerBase
     }
 
     [HttpGet]
-    [Route("[controller]/[action]")]
     public async Task<List<Creative>> GetList()
     {
         return await this.creativeRepository.GetListAsync();
     }
 
     [HttpPost]
-    [Route("[controller]/[action]")]
     public async Task<IActionResult> Create(Page page)
     {
         var result = await this.creativeCrudService.Create(page);
@@ -35,7 +33,6 @@ public class HomeController : ControllerBase
     }
 
     [HttpGet]
-    [Route("[controller]/[action]")]
     public async Task<IActionResult> GetById(int pageId)
     {
         var result = await this.creativeCrudService.GetById(pageId);
@@ -44,7 +41,6 @@ public class HomeController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("[controller]/[action]")]
     public async Task<IActionResult> Delete(int pageId)
     {
         var result = await this.creativeCrudService.Delete(pageId);
@@ -53,7 +49,6 @@ public class HomeController : ControllerBase
     }
 
     [HttpPut]
-    [Route("[controller]/[action]")]
     public async Task<IActionResult> Update(int pageId, Page page)
     {
         var result = await this.creativeCrudService.Update(pageId, page);
