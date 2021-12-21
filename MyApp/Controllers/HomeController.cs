@@ -26,6 +26,11 @@ public class HomeController : ControllerBase
     [Route("[controller]/[action]")]
     public async Task<IActionResult> Create(Page page)
     {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest(this.ModelState);
+        }
+
         try
         {
             await this.pageRepository.Create(page);
@@ -33,11 +38,6 @@ public class HomeController : ControllerBase
         catch
         {
             return this.BadRequest("This name is already taken");
-        }
-
-        if (!this.ModelState.IsValid)
-        {
-            return this.BadRequest(this.ModelState);
         }
 
         return this.Ok(page);
@@ -84,6 +84,11 @@ public class HomeController : ControllerBase
             return this.NotFound($"Page vith id: {pageId} not found");
         }
 
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest(this.ModelState);
+        }
+
         try
         {
             await this.pageRepository.Update(oldPage, page);
@@ -91,11 +96,6 @@ public class HomeController : ControllerBase
         catch
         {
             return this.BadRequest("This name is already taken");
-        }
-
-        if (!this.ModelState.IsValid)
-        {
-            return this.BadRequest(this.ModelState);
         }
 
         return this.Ok(page);
