@@ -1,6 +1,7 @@
 ﻿using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.DomainModel;
+using MyApp.Domain.Services;
 
 namespace MyApp;
 public class Startup
@@ -26,6 +27,7 @@ public class Startup
         });
 
         services.AddTransient<ICreativeRepository, CreativeRepository>();
+        services.AddTransient<ICreativeCrudService, CreativeCrudService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
