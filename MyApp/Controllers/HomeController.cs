@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using MyApp.Domain;
 using MyApp.Domain.DomainModel;
 
@@ -8,18 +10,18 @@ namespace MyApp.Controllers;
 [Produces("application/json")]
 public class HomeController : ControllerBase
 {
-    private readonly ICreativeRepository pageRepository;
+    private readonly ICreativeRepository creativeRepository;
 
     public HomeController(ICreativeRepository repository)
     {
-        this.pageRepository = repository;
+        this.creativeRepository = repository;
     }
 
     [HttpGet]
     [Route("[controller]/[action]")]
     public async Task<List<Creative>> GetList()
     {
-        return await this.pageRepository.GetListAsync();
+        return await this.creativeRepository.GetListAsync();
     }
 
     [HttpPost]
@@ -33,11 +35,18 @@ public class HomeController : ControllerBase
 
         try
         {
-            await this.pageRepository.Create(page);
+            await this.creativeRepository.Create(page);
         }
-        catch
+        catch (DbUpdateException ex)
         {
-            return this.BadRequest("This name is already taken");
+            if (ex.InnerException is SqlException sqlEx && sqlEx.Number == 2601)
+            {
+                return this.BadRequest("This name is already taken");
+            }
+            else
+            {
+                return this.BadRequest("Unhandled error");
+            }
         }
 
         return this.Ok(page);
@@ -47,7 +56,7 @@ public class HomeController : ControllerBase
     [Route("[controller]/[action]")]
     public async Task<IActionResult> GetById(int pageId)
     {
-        var page = await this.pageRepository.Get(pageId);
+        var page = await this.creativeRepository.Get(pageId);
 
         if (page == null)
         {
@@ -61,14 +70,14 @@ public class HomeController : ControllerBase
     [Route("[controller]/[action]")]
     public async Task<IActionResult> Delete(int pageId)
     {
-        var page = await this.pageRepository.Get(pageId);
+        var page = await this.creativeRepository.Get(pageId);
 
         if (page == null)
         {
             return this.NotFound($"Page vith id: {pageId} not found");
         }
 
-        await this.pageRepository.Delete(page);
+        await this.creativeRepository.Delete(page);
 
         return this.Ok("Item deleted");
     }
@@ -77,7 +86,7 @@ public class HomeController : ControllerBase
     [Route("[controller]/[action]")]
     public async Task<IActionResult> Update(int pageId, Page page)
     {
-        var oldPage = await this.pageRepository.Get(pageId);
+        var oldPage = await this.creativeRepository.Get(pageId);
 
         if (oldPage == null)
         {
@@ -91,11 +100,18 @@ public class HomeController : ControllerBase
 
         try
         {
-            await this.pageRepository.Update(oldPage, page);
+            await this.creativeRepository.Update(oldPage, page);
         }
-        catch
+        catch (DbUpdateException ex)
         {
-            return this.BadRequest("This name is already taken");
+            if (ex.InnerException is SqlException sqlEx && sqlEx.Number == 2601)
+            {
+                return this.BadRequest("This name is already taken");
+            }
+            else
+            {
+                return this.BadRequest("Unhandled error");
+            }
         }
 
         return this.Ok(page);
