@@ -27,32 +27,24 @@ public class HomeController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(Page page)
     {
-        var result = await this.creativeCrudService.Create(page);
-
-        return result;
+        return await this.creativeCrudService.Create(page);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetById(int pageId)
     {
-        var result = await this.creativeCrudService.GetById(pageId);
-
-        return result;
+        return await this.creativeCrudService.GetById(pageId);
     }
 
     [HttpDelete]
     public async Task<IActionResult> Delete(int pageId)
     {
-        var result = await this.creativeCrudService.Delete(pageId);
-
-        return result;
+        return await this.creativeCrudService.Delete(pageId);
     }
 
     [HttpPut]
     public async Task<IActionResult> Update(int pageId, Page page)
     {
-        var result = await this.creativeCrudService.Update(pageId, page);
-
-        return result;
+        return await this.creativeCrudService.Update(pageId, page);
     }
 }
