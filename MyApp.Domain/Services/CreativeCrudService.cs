@@ -8,10 +8,12 @@ namespace MyApp.Domain.Services
     public class CreativeCrudService : ControllerBase, ICreativeCrudService
     {
         private readonly ICreativeRepository creativeRepository;
+        private readonly IValidationService validationService;
 
-        public CreativeCrudService(ICreativeRepository repository)
+        public CreativeCrudService(ICreativeRepository repository, IValidationService validation)
         {
             this.creativeRepository = repository;
+            this.validationService = validation;
         }
 
         public async Task<IActionResult> Create(Creative page)
@@ -27,7 +29,7 @@ namespace MyApp.Domain.Services
             }
             catch (DbUpdateException ex)
             {
-                if (ex.InnerException is SqlException sqlEx && sqlEx.Number == 2601)
+                if (!this.validationService.ValidationNameIsUnique(page.Name))
                 {
                     return this.BadRequest("This name is already taken");
                 }
@@ -86,7 +88,7 @@ namespace MyApp.Domain.Services
             }
             catch (DbUpdateException ex)
             {
-                if (ex.InnerException is SqlException sqlEx && sqlEx.Number == 2601)
+                if (!this.validationService.ValidationNameIsUnique(page.Name))
                 {
                     return this.BadRequest("This name is already taken");
                 }

@@ -28,6 +28,7 @@ public class Startup
 
         services.AddTransient<ICreativeRepository, CreativeRepository>();
         services.AddTransient<ICreativeCrudService, CreativeCrudService>();
+        services.AddTransient<IValidationService, ValidationService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
