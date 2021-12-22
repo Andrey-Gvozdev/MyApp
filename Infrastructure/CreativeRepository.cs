@@ -14,7 +14,7 @@ public class CreativeRepository : ICreativeRepository
 
     public Task<List<Creative>> GetListAsync()
     {
-        return this.db.Pages.OfType<Creative>().ToListAsync();
+        return this.db.Pages.OfType<Creative>().AsNoTracking().ToListAsync();
     }
 
     public async Task<Creative> Create(Creative creative)

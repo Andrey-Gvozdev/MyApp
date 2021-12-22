@@ -1,4 +1,5 @@
-﻿using MyApp.Domain.Services;
+﻿using Microsoft.EntityFrameworkCore;
+using MyApp.Domain.Services;
 
 namespace Infrastructure
 {
@@ -11,16 +12,9 @@ namespace Infrastructure
             this.db = context;
         }
 
-        public bool ValidationNameIsUnique(string name)
+        public Task<bool> ValidationNameIsUnique(string name)
         {
-            var validateName = this.db.Creatives.FirstOrDefault(x => x.Name == name);
-
-            if (validateName != null)
-            {
-                return false;
-            }
-
-            return true;
+            return this.db.Creatives.AnyAsync(x => x.Name == name);
         }
     }
 }

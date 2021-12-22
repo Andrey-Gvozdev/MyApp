@@ -2,6 +2,6 @@
 {
     public interface IValidationService
     {
-        bool ValidationNameIsUnique(string name);
+        Task<bool> ValidationNameIsUnique(string name);
     }
 }

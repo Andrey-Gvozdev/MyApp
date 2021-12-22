@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.DomainModel;
 
@@ -27,9 +26,9 @@ namespace MyApp.Domain.Services
             {
                 await this.creativeRepository.Create(page);
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException)
             {
-                if (!this.validationService.ValidationNameIsUnique(page.Name))
+                if (await this.validationService.ValidationNameIsUnique(page.Name))
                 {
                     return this.BadRequest("This name is already taken");
                 }
@@ -86,9 +85,9 @@ namespace MyApp.Domain.Services
             {
                 await this.creativeRepository.Update(oldPage, page);
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException)
             {
-                if (!this.validationService.ValidationNameIsUnique(page.Name))
+                if (await this.validationService.ValidationNameIsUnique(page.Name))
                 {
                     return this.BadRequest("This name is already taken");
                 }
