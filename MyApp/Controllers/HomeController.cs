@@ -19,32 +19,32 @@ public class HomeController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<List<Creative>> GetList()
+    public Task<List<Creative>> GetList()
     {
-        return await this.creativeRepository.GetListAsync();
+        return this.creativeRepository.GetListAsync();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(Page page)
+    public Task<IActionResult> Create(Page page)
     {
-        return await this.creativeCrudService.Create(page);
+        return this.creativeCrudService.Create(page);
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetById(int pageId)
+    public Task<IActionResult> GetById(int pageId)
     {
-        return await this.creativeCrudService.GetById(pageId);
+        return this.creativeCrudService.GetById(pageId);
     }
 
     [HttpDelete]
-    public async Task<IActionResult> Delete(int pageId)
+    public Task<IActionResult> Delete(int pageId)
     {
-        return await this.creativeCrudService.Delete(pageId);
+        return this.creativeCrudService.Delete(pageId);
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update(int pageId, Page page)
+    public Task<IActionResult> Update(int pageId, Page page)
     {
-        return await this.creativeCrudService.Update(pageId, page);
+        return this.creativeCrudService.Update(pageId, page);
     }
 }
