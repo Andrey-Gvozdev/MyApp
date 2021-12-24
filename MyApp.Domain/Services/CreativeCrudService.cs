@@ -21,18 +21,8 @@ public class CreativeCrudService : ControllerBase, ICreativeCrudService
         {
             this.validationService.ValidationNameLength(page.Name);
             this.validationService.ValidationNameIsFilled(page.Name);
+            await this.validationService.ValidationNameIsUnique(page.Name);
             await this.creativeRepository.Create(page);
-        }
-        catch (DbUpdateException)
-        {
-            if (await this.validationService.ValidationNameIsUnique(page.Name))
-            {
-                throw new ValidationException("This name is already taken");
-            }
-            else
-            {
-                throw new ValidationException("Unhandled error");
-            }
         }
         catch (ValidationException validationException)
         {
@@ -81,18 +71,12 @@ public class CreativeCrudService : ControllerBase, ICreativeCrudService
         {
             this.validationService.ValidationNameLength(page.Name);
             this.validationService.ValidationNameIsFilled(page.Name);
+            await this.validationService.ValidationNameIsUnique(page.Name);
             await this.creativeRepository.Update(oldPage, page);
         }
-        catch (DbUpdateException)
+        catch (ValidationException validationException)
         {
-            if (await this.validationService.ValidationNameIsUnique(page.Name))
-            {
-                throw new ValidationException("This name is already taken");
-            }
-            else
-            {
-                throw new ValidationException("Unhandled error");
-            }
+            throw new ValidationException(validationException.Message);
         }
 
         return page;

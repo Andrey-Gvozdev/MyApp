@@ -1,7 +1,7 @@
 ﻿namespace MyApp.Domain.Services;
 public interface IValidationService
 {
-    Task<bool> ValidationNameIsUnique(string name);
+    Task ValidationNameIsUnique(string name);
 
     void ValidationNameIsFilled(string name);
 

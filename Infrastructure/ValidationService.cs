@@ -12,9 +12,12 @@ public class ValidationService : IValidationService
         this.db = context;
     }
 
-    public Task<bool> ValidationNameIsUnique(string name)
+    public async Task ValidationNameIsUnique(string name)
     {
-        return this.db.Creatives.AnyAsync(x => x.Name == name);
+        if (await this.db.Creatives.AnyAsync(x => x.Name == name))
+        {
+            throw new ValidationException("This name is already taken");
+        }
     }
 
     public void ValidationNameIsFilled(string name)
