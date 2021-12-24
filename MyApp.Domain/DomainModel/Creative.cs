@@ -1,8 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Swashbuckle.AspNetCore.Annotations;
+﻿using Swashbuckle.AspNetCore.Annotations;
 
 namespace MyApp.Domain;
-public abstract class Creative : IValidatableObject
+public abstract class Creative
 {
     [SwaggerSchema(ReadOnly = true)]
     public int Id { get; set; }
@@ -15,18 +14,5 @@ public abstract class Creative : IValidatableObject
     {
         this.Name = name;
         this.Content = content;
-    }
-
-    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-    {
-        if (string.IsNullOrWhiteSpace(this.Name))
-        {
-            yield return new ValidationResult("Name field is empty");
-        }
-
-        if (this.Name.Length > 30)
-        {
-            yield return new ValidationResult("Name field must be less than 30 characters");
-        }
     }
 }

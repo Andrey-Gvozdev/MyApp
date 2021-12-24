@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
+using MyApp.Middleware;
 
 namespace MyApp;
 public class Startup
@@ -48,6 +49,8 @@ public class Startup
         app.UseStaticFiles();
 
         app.UseRouting();
+
+        app.UseCreativeValidationMiddleware();
 
         app.UseEndpoints(endpoints =>
         {

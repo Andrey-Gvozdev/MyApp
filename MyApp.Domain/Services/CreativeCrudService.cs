@@ -1,103 +1,100 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.DomainModel;
 
-namespace MyApp.Domain.Services
+namespace MyApp.Domain.Services;
+public class CreativeCrudService : ControllerBase, ICreativeCrudService
 {
-    public class CreativeCrudService : ControllerBase, ICreativeCrudService
+    private readonly ICreativeRepository creativeRepository;
+    private readonly IValidationService validationService;
+
+    public CreativeCrudService(ICreativeRepository repository, IValidationService validation)
     {
-        private readonly ICreativeRepository creativeRepository;
-        private readonly IValidationService validationService;
+        this.creativeRepository = repository;
+        this.validationService = validation;
+    }
 
-        public CreativeCrudService(ICreativeRepository repository, IValidationService validation)
+    public async Task<Creative> Create(Creative page)
+    {
+        try
         {
-            this.creativeRepository = repository;
-            this.validationService = validation;
+            this.validationService.ValidationNameLength(page.Name);
+            this.validationService.ValidationNameIsFilled(page.Name);
+            await this.creativeRepository.Create(page);
+        }
+        catch (DbUpdateException)
+        {
+            if (await this.validationService.ValidationNameIsUnique(page.Name))
+            {
+                throw new ValidationException("This name is already taken");
+            }
+            else
+            {
+                throw new ValidationException("Unhandled error");
+            }
+        }
+        catch (ValidationException validationException)
+        {
+            throw new ValidationException(validationException.Message);
         }
 
-        public async Task<IActionResult> Create(Creative page)
+        return page;
+    }
+
+    public async Task<Creative> GetById(int pageId)
+    {
+        var page = await this.creativeRepository.Get(pageId);
+
+        if (page == null)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
-            try
-            {
-                await this.creativeRepository.Create(page);
-            }
-            catch (DbUpdateException)
-            {
-                if (await this.validationService.ValidationNameIsUnique(page.Name))
-                {
-                    return this.BadRequest("This name is already taken");
-                }
-                else
-                {
-                    return this.BadRequest("Unhandled error");
-                }
-            }
-
-            return this.Ok(page);
+            throw new ValidationException($"Page vith id: {pageId} not found");
         }
 
-        public async Task<IActionResult> GetById(int pageId)
+        return page;
+    }
+
+    public async Task<Creative> Delete(int pageId)
+    {
+        var page = await this.creativeRepository.Get(pageId);
+
+        if (page == null)
         {
-            var page = await this.creativeRepository.Get(pageId);
-
-            if (page == null)
-            {
-                return this.NotFound($"Page vith id: {pageId} not found");
-            }
-
-            return this.Ok(page);
+            throw new ValidationException($"Page vith id: {pageId} not found");
         }
 
-        public async Task<IActionResult> Delete(int pageId)
+        await this.creativeRepository.Delete(page);
+
+        return page;
+    }
+
+    public async Task<Creative> Update(int pageId, Creative page)
+    {
+        var oldPage = await this.creativeRepository.Get(pageId);
+
+        if (oldPage == null)
         {
-            var page = await this.creativeRepository.Get(pageId);
-
-            if (page == null)
-            {
-                return this.NotFound($"Page vith id: {pageId} not found");
-            }
-
-            await this.creativeRepository.Delete(page);
-
-            return this.Ok("Item deleted");
+            throw new ValidationException($"Page vith id: {pageId} not found");
         }
 
-        public async Task<IActionResult> Update(int pageId, Creative page)
+        try
         {
-            var oldPage = await this.creativeRepository.Get(pageId);
-
-            if (oldPage == null)
-            {
-                return this.NotFound($"Page vith id: {pageId} not found");
-            }
-
-            if (!this.ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
-            try
-            {
-                await this.creativeRepository.Update(oldPage, page);
-            }
-            catch (DbUpdateException)
-            {
-                if (await this.validationService.ValidationNameIsUnique(page.Name))
-                {
-                    return this.BadRequest("This name is already taken");
-                }
-                else
-                {
-                    return this.BadRequest("Unhandled error");
-                }
-            }
-
-            return this.Ok(page);
+            this.validationService.ValidationNameLength(page.Name);
+            this.validationService.ValidationNameIsFilled(page.Name);
+            await this.creativeRepository.Update(oldPage, page);
         }
+        catch (DbUpdateException)
+        {
+            if (await this.validationService.ValidationNameIsUnique(page.Name))
+            {
+                throw new ValidationException("This name is already taken");
+            }
+            else
+            {
+                throw new ValidationException("Unhandled error");
+            }
+        }
+
+        return page;
     }
 }

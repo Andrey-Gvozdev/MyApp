@@ -25,25 +25,25 @@ public class HomeController : ControllerBase
     }
 
     [HttpPost]
-    public Task<IActionResult> Create(Page page)
+    public Task<Creative> Create(Page page)
     {
         return this.creativeCrudService.Create(page);
     }
 
     [HttpGet]
-    public Task<IActionResult> GetById(int pageId)
+    public Task<Creative> GetById(int pageId)
     {
         return this.creativeCrudService.GetById(pageId);
     }
 
     [HttpDelete]
-    public Task<IActionResult> Delete(int pageId)
+    public Task<Creative> Delete(int pageId)
     {
         return this.creativeCrudService.Delete(pageId);
     }
 
     [HttpPut]
-    public Task<IActionResult> Update(int pageId, Page page)
+    public Task<Creative> Update(int pageId, Page page)
     {
         return this.creativeCrudService.Update(pageId, page);
     }

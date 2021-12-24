@@ -1,20 +1,35 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.Services;
 
-namespace Infrastructure
+namespace Infrastructure;
+public class ValidationService : IValidationService
 {
-    public class ValidationService : IValidationService
+    private readonly ApplicationDbContext db;
+
+    public ValidationService(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext db;
+        this.db = context;
+    }
 
-        public ValidationService(ApplicationDbContext context)
+    public Task<bool> ValidationNameIsUnique(string name)
+    {
+        return this.db.Creatives.AnyAsync(x => x.Name == name);
+    }
+
+    public void ValidationNameIsFilled(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
         {
-            this.db = context;
+            throw new ValidationException("Name field is empty");
         }
+    }
 
-        public Task<bool> ValidationNameIsUnique(string name)
+    public void ValidationNameLength(string name)
+    {
+        if (name.Length > 30)
         {
-            return this.db.Creatives.AnyAsync(x => x.Name == name);
+            throw new ValidationException("Name field must be less than 30 characters");
         }
     }
 }

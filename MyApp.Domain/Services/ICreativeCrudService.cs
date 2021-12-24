@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace MyApp.Domain.Services
+﻿namespace MyApp.Domain.Services;
+public interface ICreativeCrudService
 {
-    public interface ICreativeCrudService
-    {
-        Task<IActionResult> Create(Creative creative);
+    Task<Creative> Create(Creative creative);
 
-        Task<IActionResult> GetById(int id);
+    Task<Creative> GetById(int id);
 
-        Task<IActionResult> Delete(int id);
+    Task<Creative> Delete(int id);
 
-        Task<IActionResult> Update(int id, Creative creative);
-    }
+    Task<Creative> Update(int id, Creative creative);
 }
