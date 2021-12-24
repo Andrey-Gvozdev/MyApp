@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.DomainModel;
 
 namespace MyApp.Domain.Services;
@@ -36,9 +35,13 @@ public class CreativeCrudService : ControllerBase, ICreativeCrudService
     {
         var page = await this.creativeRepository.Get(pageId);
 
-        if (page == null)
+        try
         {
-            throw new ValidationException($"Page vith id: {pageId} not found");
+            this.validationService.ValidationCreativeIsNotNull(page, pageId);
+        }
+        catch (ValidationException validationException)
+        {
+            throw new ValidationException(validationException.Message);
         }
 
         return page;
@@ -48,9 +51,13 @@ public class CreativeCrudService : ControllerBase, ICreativeCrudService
     {
         var page = await this.creativeRepository.Get(pageId);
 
-        if (page == null)
+        try
         {
-            throw new ValidationException($"Page vith id: {pageId} not found");
+            this.validationService.ValidationCreativeIsNotNull(page, pageId);
+        }
+        catch (ValidationException validationException)
+        {
+            throw new ValidationException(validationException.Message);
         }
 
         await this.creativeRepository.Delete(page);
@@ -62,13 +69,9 @@ public class CreativeCrudService : ControllerBase, ICreativeCrudService
     {
         var oldPage = await this.creativeRepository.Get(pageId);
 
-        if (oldPage == null)
-        {
-            throw new ValidationException($"Page vith id: {pageId} not found");
-        }
-
         try
         {
+            this.validationService.ValidationCreativeIsNotNull(oldPage, pageId);
             this.validationService.ValidationNameLength(page.Name);
             this.validationService.ValidationNameIsFilled(page.Name);
             await this.validationService.ValidationNameIsUnique(page.Name);

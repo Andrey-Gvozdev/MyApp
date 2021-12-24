@@ -6,4 +6,6 @@ public interface IValidationService
     void ValidationNameIsFilled(string name);
 
     void ValidationNameLength(string name);
+
+    void ValidationCreativeIsNotNull(Creative creative, int id);
 }
