@@ -19,7 +19,7 @@ public class CreativeRepository : ICreativeRepository
 
     public async Task<Creative> Create(Creative creative)
     {
-        Page? page = (Page)creative;
+        Page page = (Page)creative;
 
         await this.db.Pages.AddAsync(page);
         await this.db.SaveChangesAsync();
@@ -45,6 +45,7 @@ public class CreativeRepository : ICreativeRepository
     public async Task Delete(Creative creative)
     {
         Page page = (Page)creative;
+
         this.db.Pages.Remove(page);
         await this.db.SaveChangesAsync();
     }

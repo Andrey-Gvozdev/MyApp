@@ -19,15 +19,14 @@ public class Page : Creative
     public void HtmlCorrector(string content)
     {
         var htmlDoc = new HtmlDocument();
-        htmlDoc.LoadHtml(content);
         string res;
+
+        htmlDoc.LoadHtml(content);
 
         content = content.Replace("<!DOCTYPE html>", string.Empty);
 
         var htmlHtml = htmlDoc.DocumentNode.SelectSingleNode("//html");
-
         var htmlHead = htmlDoc.DocumentNode.SelectSingleNode("//head");
-
         var htmlBody = htmlDoc.DocumentNode.SelectSingleNode("//body");
 
         if (htmlHtml == null)
