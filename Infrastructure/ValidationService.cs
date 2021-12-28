@@ -13,6 +13,10 @@ public class ValidationService : IValidationService
         this.db = context;
     }
 
+    public ValidationService()
+    {
+    }
+
     public async Task ValidationNameIsUnique(string name)
     {
         if (await this.db.Creatives.AnyAsync(x => x.Name == name))

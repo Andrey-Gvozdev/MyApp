@@ -1,28 +1,30 @@
+using Infrastructure;
 using Moq;
 using MyApp.Domain.Services;
 using NUnit.Framework;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyAppTests;
 
 [TestFixture]
 public class ValidationServiceTests
 {
-    [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
-    [TestCase("")]
-    public void ValidationNameLength_NotEmptyLess30Characters_ReturnsFalse(string name)
+    [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", false)]
+    [TestCase("validName", true)]
+    public void ValidationNameLength_WhenCalled_ChangesWasNameValid(string name, bool expected)
     {
         bool result = true;
-        var mock = new Mock<IValidationService>();
+        IValidationService validationService = new ValidationService();
 
         try
         {
-            mock.Verify(x => x.ValidationNameLength(name));
+            validationService.ValidationNameLength(name);
         }
         catch
         {
             result = false;
         }
 
-        Assert.False(result);
+        Assert.AreEqual(result, expected);
     }
 }
