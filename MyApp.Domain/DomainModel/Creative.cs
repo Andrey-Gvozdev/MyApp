@@ -6,7 +6,7 @@ public abstract class Creative
     [SwaggerSchema(ReadOnly = true)]
     public int Id { get; set; }
 
-    public string Content { get; private set; }
+    public string Content { get; }
 
     public string Name { get; private set; }
 
