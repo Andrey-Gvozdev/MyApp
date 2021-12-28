@@ -7,7 +7,7 @@ public interface ICreativeRepository
 
     Task<Creative> Get(int creativeId);
 
-    Task<Creative> Update(Creative oldCreative, Creative creative);
+    Task<Creative> Update(Creative creative);
 
     Task Delete(Creative creative);
 }

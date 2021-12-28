@@ -13,19 +13,19 @@ public class ValidationService : IValidationService
         this.db = context;
     }
 
-    public async Task ValidationCreativeName(string name)
+    public async Task ValidationCreativeName(Creative creative)
     {
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(creative.Name))
         {
             throw new ValidationException("Name field is empty");
         }
 
-        if (await this.db.Creatives.AnyAsync(x => x.Name == name))
+        if (await this.db.Creatives.AnyAsync(x => x.Name == creative.Name && x.Id != creative.Id))
         {
             throw new ValidationException("This name is already taken");
         }
 
-        if (name.Length > 30)
+        if (creative.Name.Length > 30)
         {
             throw new ValidationException("Name field must be less than 30 characters");
         }

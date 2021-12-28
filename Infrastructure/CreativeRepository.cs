@@ -32,11 +32,9 @@ public class CreativeRepository : ICreativeRepository
         return this.db.Pages.OfType<Creative>().FirstOrDefaultAsync(x => x.Id == creativeId);
     }
 
-    public async Task<Creative> Update(Creative oldPage, Creative creative)
+    public async Task<Creative> Update(Creative creative)
     {
-        creative.Id = oldPage.Id;
-
-        this.db.Entry(oldPage).CurrentValues.SetValues(creative);
+        this.db.Update(creative);
         await this.db.SaveChangesAsync();
 
         return creative;

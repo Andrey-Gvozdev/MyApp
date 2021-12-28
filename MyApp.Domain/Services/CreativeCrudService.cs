@@ -17,7 +17,7 @@ public class CreativeCrudService : ICreativeCrudService
     {
         try
         {
-            await this.validationService.ValidationCreativeName(page.Name);
+            await this.validationService.ValidationCreativeName(page);
             await this.creativeRepository.Create(page);
         }
         catch (ValidationException validationException)
@@ -64,13 +64,12 @@ public class CreativeCrudService : ICreativeCrudService
 
     public async Task<Creative> Update(int pageId, Creative page)
     {
-        var oldPage = await this.creativeRepository.Get(pageId);
-
         try
         {
-            this.validationService.ValidationCreativeIsNotNull(oldPage, pageId);
-            await this.validationService.ValidationCreativeName(page.Name);
-            await this.creativeRepository.Update(oldPage, page);
+            this.validationService.ValidationCreativeIsNotNull(page, pageId);
+            page.Id = pageId;
+            await this.validationService.ValidationCreativeName(page);
+            await this.creativeRepository.Update(page);
         }
         catch (ValidationException validationException)
         {
