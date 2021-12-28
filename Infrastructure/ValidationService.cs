@@ -13,28 +13,18 @@ public class ValidationService : IValidationService
         this.db = context;
     }
 
-    public ValidationService()
-    {
-    }
-
-    public async Task ValidationNameIsUnique(string name)
-    {
-        if (await this.db.Creatives.AnyAsync(x => x.Name == name))
-        {
-            throw new ValidationException("This name is already taken");
-        }
-    }
-
-    public void ValidationNameIsFilled(string name)
+    public async Task ValidationCreativeName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new ValidationException("Name field is empty");
         }
-    }
 
-    public void ValidationNameLength(string name)
-    {
+        if (await this.db.Creatives.AnyAsync(x => x.Name == name))
+        {
+            throw new ValidationException("This name is already taken");
+        }
+
         if (name.Length > 30)
         {
             throw new ValidationException("Name field must be less than 30 characters");

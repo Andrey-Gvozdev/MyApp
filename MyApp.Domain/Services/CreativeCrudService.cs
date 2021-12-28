@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
 using MyApp.Domain.DomainModel;
 
 namespace MyApp.Domain.Services;
-public class CreativeCrudService : ControllerBase, ICreativeCrudService
+public class CreativeCrudService : ICreativeCrudService
 {
     private readonly ICreativeRepository creativeRepository;
     private readonly IValidationService validationService;
@@ -18,9 +17,7 @@ public class CreativeCrudService : ControllerBase, ICreativeCrudService
     {
         try
         {
-            this.validationService.ValidationNameLength(page.Name);
-            this.validationService.ValidationNameIsFilled(page.Name);
-            await this.validationService.ValidationNameIsUnique(page.Name);
+            await this.validationService.ValidationCreativeName(page.Name);
             await this.creativeRepository.Create(page);
         }
         catch (ValidationException validationException)
@@ -72,9 +69,7 @@ public class CreativeCrudService : ControllerBase, ICreativeCrudService
         try
         {
             this.validationService.ValidationCreativeIsNotNull(oldPage, pageId);
-            this.validationService.ValidationNameLength(page.Name);
-            this.validationService.ValidationNameIsFilled(page.Name);
-            await this.validationService.ValidationNameIsUnique(page.Name);
+            await this.validationService.ValidationCreativeName(page.Name);
             await this.creativeRepository.Update(oldPage, page);
         }
         catch (ValidationException validationException)
