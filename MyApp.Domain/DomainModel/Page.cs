@@ -9,12 +9,12 @@ public class Page : Creative
         this.SetContent(content);
     }
 
-    public override string SetContent(string content)
+    public override void SetContent(string content)
     {
-        return CorrectorHtml(content);
+        this.Content = CorrectHtml(content);
     }
 
-    private static string CorrectorHtml(string content)
+    private static string CorrectHtml(string content)
     {
         var htmlDoc = new HtmlDocument();
         string res;
