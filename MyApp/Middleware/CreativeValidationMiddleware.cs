@@ -1,5 +1,5 @@
-﻿using MyApp.CustomExceptions;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using MyApp.CustomExceptions;
 
 namespace MyApp.Middleware;
 public class CreativeValidationMiddleware
@@ -24,7 +24,7 @@ public class CreativeValidationMiddleware
         }
         catch (NotFoundException notFoundException)
         {
-            httpContext.Response.StatusCode = 400;
+            httpContext.Response.StatusCode = 404;
             await httpContext.Response.WriteAsJsonAsync(notFoundException.Message);
         }
     }
