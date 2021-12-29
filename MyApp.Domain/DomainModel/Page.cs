@@ -3,20 +3,18 @@
 namespace MyApp.Domain.DomainModel;
 public class Page : Creative
 {
-    private string content;
-
-    public new string Content
-    {
-        get { return this.content; } set { this.HtmlCorrector(value); }
-    }
-
     public Page(string name, string content)
         : base(name, content)
     {
-        this.HtmlCorrector(content);
+        this.SetContent(content);
     }
 
-    public void HtmlCorrector(string content)
+    public override string SetContent(string content)
+    {
+        return CorrectorHtml(content);
+    }
+
+    private static string CorrectorHtml(string content)
     {
         var htmlDoc = new HtmlDocument();
         string res;
@@ -55,6 +53,6 @@ public class Page : Creative
             res = "<!DOCTYPE html>\n" + htmlHtml.OuterHtml;
         }
 
-        this.content = res;
+        return res;
     }
 }

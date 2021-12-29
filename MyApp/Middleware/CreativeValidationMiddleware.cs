@@ -1,5 +1,5 @@
-﻿using OpenQA.Selenium;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using OpenQA.Selenium;
 
 namespace MyApp.Middleware;
 public class CreativeValidationMiddleware

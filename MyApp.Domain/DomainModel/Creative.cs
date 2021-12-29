@@ -6,13 +6,15 @@ public abstract class Creative
     [SwaggerSchema(ReadOnly = true)]
     public int Id { get; set; }
 
-    public string Content { get; }
+    public string Content { get; private set; }
 
     public string Name { get; private set; }
 
     public Creative(string name, string content)
     {
         this.Name = name;
-        this.Content = content;
+        this.Content = this.SetContent(content);
     }
+
+    public abstract string SetContent(string content);
 }
