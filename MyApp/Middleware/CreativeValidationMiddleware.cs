@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OpenQA.Selenium;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Middleware;
 public class CreativeValidationMiddleware
@@ -20,6 +21,11 @@ public class CreativeValidationMiddleware
         {
             httpContext.Response.StatusCode = 400;
             await httpContext.Response.WriteAsJsonAsync(validationException.Message);
+        }
+        catch (NotFoundException notFoundException)
+        {
+            httpContext.Response.StatusCode = 400;
+            await httpContext.Response.WriteAsJsonAsync(notFoundException.Message);
         }
     }
 }

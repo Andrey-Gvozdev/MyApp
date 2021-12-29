@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using MyApp.Domain.DomainModel;
+﻿using MyApp.Domain.DomainModel;
+using OpenQA.Selenium;
 
 namespace MyApp.Domain.Services;
 public class CreativeCrudService : ICreativeCrudService
@@ -15,47 +15,22 @@ public class CreativeCrudService : ICreativeCrudService
 
     public async Task<Creative> Create(Creative page)
     {
-        try
-        {
-            await this.validationService.ValidationCreativeName(page);
-            await this.creativeRepository.Create(page);
-        }
-        catch (ValidationException validationException)
-        {
-            throw new ValidationException(validationException.Message);
-        }
+        await this.validationService.ValidationCreativeName(page);
+        await this.creativeRepository.Create(page);
 
         return page;
     }
 
     public async Task<Creative> GetById(int pageId)
     {
-        var page = await this.creativeRepository.Get(pageId);
-
-        try
-        {
-            this.validationService.ValidationCreativeIsNotNull(page, pageId);
-        }
-        catch (ValidationException validationException)
-        {
-            throw new ValidationException(validationException.Message);
-        }
+        var page = await this.GetPage(pageId);
 
         return page;
     }
 
     public async Task<Creative> Delete(int pageId)
     {
-        var page = await this.creativeRepository.Get(pageId);
-
-        try
-        {
-            this.validationService.ValidationCreativeIsNotNull(page, pageId);
-        }
-        catch (ValidationException validationException)
-        {
-            throw new ValidationException(validationException.Message);
-        }
+        var page = await this.GetPage(pageId);
 
         await this.creativeRepository.Delete(page);
 
@@ -64,20 +39,18 @@ public class CreativeCrudService : ICreativeCrudService
 
     public async Task<Creative> Update(int pageId, Creative page)
     {
-        var checkPage = await this.creativeRepository.Get(pageId);
+        await this.GetPage(pageId);
 
-        try
-        {
-            this.validationService.ValidationCreativeIsNotNull(checkPage, pageId);
-            page.Id = pageId;
-            await this.validationService.ValidationCreativeName(page);
-            await this.creativeRepository.Update(page);
-        }
-        catch (ValidationException validationException)
-        {
-            throw new ValidationException(validationException.Message);
-        }
+        page.Id = pageId;
+        await this.validationService.ValidationCreativeName(page);
+        await this.creativeRepository.Update(page);
 
         return page;
+    }
+
+    private async Task<Creative> GetPage(int pageId)
+    {
+        var page = await this.creativeRepository.Get(pageId);
+        return page ?? throw new NotFoundException("Item not found");
     }
 }

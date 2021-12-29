@@ -30,12 +30,4 @@ public class ValidationService : IValidationService
             throw new ValidationException("Name field must be less than 30 characters");
         }
     }
-
-    public void ValidationCreativeIsNotNull(Creative creative, int id)
-    {
-        if (creative == null)
-        {
-            throw new ValidationException($"Item vith id: {id} not found");
-        }
-    }
 }
