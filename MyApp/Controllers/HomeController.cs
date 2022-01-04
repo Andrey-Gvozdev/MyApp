@@ -25,9 +25,15 @@ public class HomeController : ControllerBase
     }
 
     [HttpPost]
-    public Task<Creative> Create(Page page)
+    public Task<Creative> CreatePage(Page page)
     {
         return this.creativeCrudService.Create(page);
+    }
+
+    [HttpPost]
+    public Task<Creative> CreateSnippet(Snippet snippet)
+    {
+        return this.creativeCrudService.Create(snippet);
     }
 
     [HttpGet]
@@ -43,8 +49,14 @@ public class HomeController : ControllerBase
     }
 
     [HttpPut]
-    public Task<Creative> Update(int pageId, Page page)
+    public Task<Creative> UpdatePage(int pageId, Page page)
     {
         return this.creativeCrudService.Update(pageId, page);
+    }
+
+    [HttpPut]
+    public Task<Creative> UpdateSnippet(int snippetId, Snippet snippet)
+    {
+        return this.creativeCrudService.Update(snippetId, snippet);
     }
 }
