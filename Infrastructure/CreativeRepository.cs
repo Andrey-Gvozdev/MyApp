@@ -15,22 +15,20 @@ public class CreativeRepository : ICreativeRepository
 
     public Task<List<Creative>> GetListAsync()
     {
-        return this.db.Pages.OfType<Creative>().AsNoTracking().ToListAsync();
+        return this.db.Creatives.AsNoTracking().ToListAsync();
     }
 
     public async Task<Creative> Create(Creative creative)
     {
-        Page page = (Page)creative;
-
-        await this.db.Pages.AddAsync(page);
+        await this.db.Creatives.AddAsync(creative);
         await this.db.SaveChangesAsync();
 
-        return page;
+        return creative;
     }
 
     public Task<Creative> Get(int creativeId)
     {
-        return this.db.Pages.OfType<Creative>().FirstOrDefaultAsync(x => x.Id == creativeId);
+        return this.db.Creatives.FirstOrDefaultAsync(x => x.Id == creativeId);
     }
 
     public async Task<Creative> Update(Creative creative)
@@ -50,9 +48,7 @@ public class CreativeRepository : ICreativeRepository
 
     public async Task Delete(Creative creative)
     {
-        Page page = (Page)creative;
-
-        this.db.Pages.Remove(page);
+        this.db.Creatives.Remove(creative);
         await this.db.SaveChangesAsync();
     }
 }
