@@ -1,80 +1,50 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyApp.Domain;
+using MyApp.Domain.DomainModel;
+using MyApp.Domain.Services;
 
-namespace MyApp.Controllers
+namespace MyApp.Controllers;
+[ApiController]
+[Route("api/[controller]/[action]")]
+[Produces("application/json")]
+public class HomeController : ControllerBase
 {
-    [ApiController]
-    [Route("api")]
-    [Produces("application/json")]
-    public class HomeController : ControllerBase
+    private readonly ICreativeRepository creativeRepository;
+    private readonly ICreativeCrudService creativeCrudService;
+
+    public HomeController(ICreativeRepository repository, ICreativeCrudService crud)
     {
-        ICreativeRepository creativeRepository;
-        public HomeController(ICreativeRepository r)
-        {
-            creativeRepository = r;
-        }
+        this.creativeRepository = repository;
+        this.creativeCrudService = crud;
+    }
 
-        [HttpGet]
-        [Route("[controller]/[action]")]
-        public async Task<List<Creative>> GetList()
-        {
-            return await creativeRepository.GetCreativeListAsync();
-        }
+    [HttpGet]
+    public Task<List<Creative>> GetList()
+    {
+        return this.creativeRepository.GetListAsync();
+    }
 
-        [HttpPost]
-        [Route("[controller]/[action]")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create(Creative creative)
-        {
-            await creativeRepository.Post(creative);
+    [HttpPost]
+    public Task<Creative> Create(Page page)
+    {
+        return this.creativeCrudService.Create(page);
+    }
 
-            return CreatedAtAction("Create", new { id = creative.Id }, creative);
-        }
+    [HttpGet]
+    public Task<Creative> GetById(int pageId)
+    {
+        return this.creativeCrudService.GetById(pageId);
+    }
 
-        [HttpGet]
-        [Route("[controller]/[action]")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Creative))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int creativeId)
-        {
-            var creative = await creativeRepository.Get(creativeId);
-            if (creative == null)
-            {
-                return NotFound();
-            }
+    [HttpDelete]
+    public Task<Creative> Delete(int pageId)
+    {
+        return this.creativeCrudService.Delete(pageId);
+    }
 
-            return Ok(creative);
-        }
-
-        [HttpDelete]
-        [Route("[controller]/[action]")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Creative))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(int creativeId)
-        {
-            var creative = await creativeRepository.Get(creativeId);
-
-            if (creative == null)
-                return NotFound();
-
-            await creativeRepository.Delete(creative);
-
-            return Ok();
-        }
-
-        [HttpPut]
-        [Route("[controller]/[action]")]
-        [ProducesResponseType(StatusCodes.Status205ResetContent, Type = typeof(Creative))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(int creativeId, Creative creative)
-        {
-            var item = await creativeRepository.Patch(creativeId, creative);
-            
-            if(item == null)
-                return NotFound();
-
-            return Ok(creative);
-        }
+    [HttpPut]
+    public Task<Creative> Update(int pageId, Page page)
+    {
+        return this.creativeCrudService.Update(pageId, page);
     }
 }

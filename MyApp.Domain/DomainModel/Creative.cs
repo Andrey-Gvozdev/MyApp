@@ -1,10 +1,23 @@
-﻿namespace MyApp.Domain;
-using Swashbuckle.AspNetCore.Annotations;
+﻿using Swashbuckle.AspNetCore.Annotations;
 
-    public class Creative
+namespace MyApp.Domain;
+public abstract class Creative
+{
+    [SwaggerSchema(ReadOnly = true)]
+    public int Id { get; set; }
+
+    public string Content { get; protected set; }
+
+    public string Name { get; private set; }
+
+    public Creative(string name, string content)
     {
-        [SwaggerSchema(ReadOnly =true)]
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Content { get; set; }
+        this.Name = name;
+        this.SetContent(content);
     }
+
+    public virtual void SetContent(string content)
+    {
+        this.Content = content;
+    }
+}

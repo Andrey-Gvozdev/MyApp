@@ -1,16 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyApp.Domain;
+using MyApp.Domain.DomainModel;
+using MyApp.Domain.Services;
 
-namespace Infrastructure
+namespace Infrastructure;
+public class ApplicationDbContext : DbContext
 {
-    public class ApplicationDbContext : DbContext
-    {
-        public DbSet<Creative> Creatives { get; set; }
+    public DbSet<Creative> Creatives { get; set; }
 
-        public ApplicationDbContext (DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-            //Database.EnsureCreated();
-        }
+    public DbSet<Page> Pages { get; set; }
+
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
+    {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CreativeConfiguration).Assembly);
+        modelBuilder.Entity<Creative>()
+            .HasDiscriminator()
+            .HasValue<Page>("Page");
     }
 }

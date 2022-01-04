@@ -1,11 +1,13 @@
-﻿namespace MyApp.Domain
+﻿namespace MyApp.Domain.DomainModel;
+public interface ICreativeRepository
 {
-    public interface ICreativeRepository
-    {
-        Task<List<Creative>> GetCreativeListAsync();
-        Task Post(Creative creative);
-        Task<Creative> Get(int creativeId);
-        Task<Creative> Patch(int creativeId, Creative creative);
-        Task Delete(Creative creative);
-    }
+    Task<List<Creative>> GetListAsync();
+
+    Task<Creative> Create(Creative creative);
+
+    Task<Creative> Get(int creativeId);
+
+    Task<Creative> Update(Creative creative);
+
+    Task Delete(Creative creative);
 }

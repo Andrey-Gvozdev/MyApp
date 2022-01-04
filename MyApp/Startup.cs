@@ -1,57 +1,60 @@
 ﻿using Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using MyApp.Domain;
+using MyApp.Domain.DomainModel;
+using MyApp.Domain.Services;
+using MyApp.Middleware;
 
-namespace MyApp
+namespace MyApp;
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
+        this.Configuration = configuration;
+    }
+
+    public IConfiguration Configuration { get; }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(
+                this.Configuration.GetConnectionString("DefaultConnection")));
+
+        services.AddControllers();
+
+        services.AddSwaggerGen(options =>
         {
-            Configuration = configuration;
-        }
+            options.EnableAnnotations();
+        });
 
-        public IConfiguration Configuration { get; }
+        services.AddTransient<ICreativeRepository, CreativeRepository>();
+        services.AddTransient<ICreativeCrudService, CreativeCrudService>();
+        services.AddTransient<IValidationService, ValidationService>();
+    }
 
-        public void ConfigureServices(IServiceCollection services)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddControllers();
-
-            services.AddSwaggerGen(options =>
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
             {
-                options.EnableAnnotations();
-            });
-
-            services.AddTransient<ICreativeRepository, CreativeRepository>();
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI(options =>
-                {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-                    options.RoutePrefix = string.Empty;
-                });
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                options.RoutePrefix = string.Empty;
             });
         }
+
+        app.UseHttpsRedirection();
+
+        app.UseStaticFiles();
+
+        app.UseRouting();
+
+        app.UseCreativeValidationMiddleware();
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
     }
 }
