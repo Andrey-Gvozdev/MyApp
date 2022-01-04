@@ -1,8 +1,12 @@
 ﻿using HtmlAgilityPack;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MyApp.Domain.DomainModel;
 public class Page : Creative
 {
+    [SwaggerSchema(ReadOnly = true)]
+    public List<Snippet>? snippets { get; set; }
+
     public Page(string name, string content)
         : base(name, content)
     {
