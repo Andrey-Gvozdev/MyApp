@@ -3,15 +3,18 @@
 namespace MyApp.Domain.DomainModel;
 public class Page : Creative
 {
-    public new string Content { get; set; }
-
     public Page(string name, string content)
         : base(name, content)
     {
-        this.Content = HtmlCorrector(content);
+        this.SetContent(content);
     }
 
-    public static string HtmlCorrector(string content)
+    public override void SetContent(string content)
+    {
+        this.Content = CorrectHtml(content);
+    }
+
+    private static string CorrectHtml(string content)
     {
         var htmlDoc = new HtmlDocument();
         string res;
