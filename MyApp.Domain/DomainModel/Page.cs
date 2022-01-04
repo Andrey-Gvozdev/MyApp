@@ -6,7 +6,6 @@ public class Page : Creative
     public Page(string name, string content)
         : base(name, content)
     {
-        this.SetContent(content);
     }
 
     public override void SetContent(string content)

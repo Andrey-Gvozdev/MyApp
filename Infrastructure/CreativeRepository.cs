@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyApp.CustomExceptions;
 using MyApp.Domain;
 using MyApp.Domain.DomainModel;
 
@@ -34,7 +35,14 @@ public class CreativeRepository : ICreativeRepository
 
     public async Task<Creative> Update(Creative creative)
     {
-        this.db.Update(creative);
+        var current = await this.Get(creative.Id);
+
+        if (current == null)
+        {
+            throw new NotFoundException("Item not found");
+        }
+
+        this.db.Entry(current).CurrentValues.SetValues(creative);
         await this.db.SaveChangesAsync();
 
         return creative;

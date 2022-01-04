@@ -39,8 +39,6 @@ public class CreativeCrudService : ICreativeCrudService
 
     public async Task<Creative> Update(int pageId, Creative page)
     {
-        await this.GetPage(pageId);
-
         page.Id = pageId;
         await this.validationService.ValidationCreativeName(page);
         await this.creativeRepository.Update(page);
