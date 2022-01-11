@@ -1,4 +1,5 @@
-﻿using Infrastructure;
+﻿using System.Text.Json.Serialization;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
@@ -22,14 +23,20 @@ public class Startup
 
         services.AddControllers();
 
+        services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
         services.AddSwaggerGen(options =>
         {
             options.EnableAnnotations();
         });
 
-        services.AddTransient<ICreativeRepository, CreativeRepository>();
-        services.AddTransient<ICreativeCrudService, CreativeCrudService>();
+        services.AddTransient<IPageRepository, PageRepository>();
+        services.AddTransient<IPageCrudService, PageCrudService>();
         services.AddTransient<IValidationService, ValidationService>();
+        services.AddTransient<ISnippetService, SnippetService>();
+        services.AddTransient<ISnippetRepository, SnippetRepository>();
+        services.AddTransient<ISnippetCrudService, SnippetCrudService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

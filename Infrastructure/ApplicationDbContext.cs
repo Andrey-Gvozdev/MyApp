@@ -20,10 +20,10 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CreativeConfiguration).Assembly);
-        modelBuilder.Entity<Creative>()
-            .HasDiscriminator()
-            .HasValue<Page>("Page")
-            .HasValue<Snippet>("Snippet");
+        modelBuilder.Entity<Page>()
+                .HasMany(c => c.Snippets)
+                .WithMany(s => s.Pages)
+                .UsingEntity(j => j.ToTable("PageSnippet"));
 
         foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
         {
