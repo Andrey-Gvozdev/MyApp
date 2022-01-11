@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain;
+using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
 
 namespace Infrastructure;
@@ -28,6 +29,21 @@ public class ValidationService : IValidationService
         if (creative.Name.Length > 30)
         {
             throw new ValidationException("Name field must be less than 30 characters");
+        }
+    }
+
+    public async Task ValidationSnippetDeleting(Snippet snippet)
+    {
+        var current = await this.db.Snippets.Include(u => u.Pages).FirstOrDefaultAsync(x => x.Id == snippet.Id);
+        if (current?.Pages?.Count > 0)
+        {
+            string pagesId = "";
+            foreach (var page in current.Pages)
+            {
+                pagesId += page.Id + " ";
+            }
+
+            throw new ValidationException("This snippet(" + snippet.Id + ") is used in some pages: " + pagesId);
         }
     }
 }

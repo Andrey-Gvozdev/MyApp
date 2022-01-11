@@ -1,5 +1,6 @@
 ﻿using MyApp.CustomExceptions;
 using MyApp.Domain.DomainModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Domain.Services;
 public class SnippetCrudService : ISnippetCrudService
@@ -24,6 +25,7 @@ public class SnippetCrudService : ISnippetCrudService
     {
         var snippet = await this.GetSnippet(id);
 
+        await this.validationService.ValidationSnippetDeleting(snippet);
         await this.snippetRepository.Delete(snippet);
 
         return snippet;
@@ -47,6 +49,7 @@ public class SnippetCrudService : ISnippetCrudService
     private async Task<Snippet> GetSnippet(int id)
     {
         var snippet = await this.snippetRepository.Get(id);
+
         return snippet ?? throw new NotFoundException("Item not found");
     }
 }
