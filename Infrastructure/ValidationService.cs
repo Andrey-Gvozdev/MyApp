@@ -32,7 +32,7 @@ public class ValidationService : IValidationService
         }
     }
 
-    public async Task ValidationSnippetDeleting(Snippet snippet)
+    public async Task ValidationSnippet(Snippet snippet)
     {
         var current = await this.db.Snippets.Include(u => u.Pages).FirstOrDefaultAsync(x => x.Id == snippet.Id);
         if (current?.Pages?.Count > 0)

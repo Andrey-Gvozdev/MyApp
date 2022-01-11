@@ -5,5 +5,5 @@ public interface IValidationService
 {
     Task ValidationCreativeName(Creative creative);
 
-    Task ValidationSnippetDeleting(Snippet snippet);
+    Task ValidationSnippet(Snippet snippet);
 }

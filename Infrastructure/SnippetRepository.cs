@@ -1,15 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyApp.CustomExceptions;
 using MyApp.Domain.DomainModel;
+using MyApp.Domain.Services;
 
 namespace Infrastructure;
 public class SnippetRepository : ISnippetRepository
 {
     private readonly ApplicationDbContext db;
 
-    public SnippetRepository(ApplicationDbContext context)
+    private readonly IValidationService validationService;
+
+    public SnippetRepository(ApplicationDbContext context, IValidationService validation)
     {
         this.db = context;
+        this.validationService = validation;
     }
 
     public Task<List<Snippet>> GetListAsync()
@@ -33,6 +37,11 @@ public class SnippetRepository : ISnippetRepository
     public async Task<Snippet> Update(Snippet snippet)
     {
         var current = await this.Get(snippet.Id);
+
+        if (current.Name != snippet.Name)
+        {
+            await this.validationService.ValidationSnippet(current);
+        }
 
         if (current == null)
         {
