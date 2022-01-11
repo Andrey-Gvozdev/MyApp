@@ -39,7 +39,20 @@ public class SnippetCrudService : ISnippetCrudService
     {
         snippet.Id = id;
 
+        var current = await this.GetSnippet(snippet.Id);
+
+        if (current == null)
+        {
+            throw new NotFoundException("Item not found");
+        }
+
         await this.validationService.ValidationCreativeName(snippet);
+
+        if (current.Name != snippet.Name)
+        {
+            await this.validationService.ValidationSnippet(current);
+        }
+
         await this.snippetRepository.Update(snippet);
 
         return snippet;

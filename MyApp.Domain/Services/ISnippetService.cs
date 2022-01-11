@@ -5,7 +5,7 @@ public interface ISnippetService
 {
     IEnumerable<string> FindSnippetNames(string content);
 
-    List<Snippet> SnippetValidation(IEnumerable<string> snippetNames);
+    List<int> SnippetValidation(IEnumerable<string> snippetNames);
 
     Page FillSnippetsList(Page page);
 }

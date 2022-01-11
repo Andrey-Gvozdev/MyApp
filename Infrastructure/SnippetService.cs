@@ -25,9 +25,9 @@ public class SnippetService : ISnippetService
         }
     }
 
-    public List<Snippet> SnippetValidation(IEnumerable<string> snippetNames)
+    public List<int> SnippetValidation(IEnumerable<string> snippetNames)
     {
-        var listSnippets = new List<Snippet>();
+        var listSnippets = new List<int>();
 
         foreach (var item in snippetNames)
         {
@@ -35,7 +35,7 @@ public class SnippetService : ISnippetService
 
             if (snippet != null)
             {
-                listSnippets.Add(snippet);
+                listSnippets.Add(snippet.Id);
             }
         }
 
@@ -46,27 +46,9 @@ public class SnippetService : ISnippetService
     {
         var snippets = this.SnippetValidation(this.FindSnippetNames(page.Content));
 
-        if (snippets.Count != 0)
+        foreach (var item in snippets)
         {
-            foreach (var item in snippets)
-            {
-                if (!page.Snippets.Contains(item))
-                {
-                    page.Snippets.Add(item);
-                }
-            }
-
-            foreach (var item in page.Snippets)
-            {
-                if (!snippets.Contains(item))
-                {
-                    page.Snippets.Remove(item);
-                }
-            }
-        }
-        else
-        {
-            page.Snippets.Clear();
+            page.PageSnippets?.Add(new PageSnippet(item));
         }
 
         return page;

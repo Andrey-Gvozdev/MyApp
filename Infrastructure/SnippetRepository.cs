@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyApp.CustomExceptions;
 using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
 
@@ -8,12 +7,9 @@ public class SnippetRepository : ISnippetRepository
 {
     private readonly ApplicationDbContext db;
 
-    private readonly IValidationService validationService;
-
-    public SnippetRepository(ApplicationDbContext context, IValidationService validation)
+    public SnippetRepository(ApplicationDbContext context)
     {
         this.db = context;
-        this.validationService = validation;
     }
 
     public Task<List<Snippet>> GetListAsync()
@@ -38,17 +34,9 @@ public class SnippetRepository : ISnippetRepository
     {
         var current = await this.Get(snippet.Id);
 
-        if (current.Name != snippet.Name)
-        {
-            await this.validationService.ValidationSnippet(current);
-        }
+        current.SetName(snippet.Name);
+        current.SetContent(snippet.Content);
 
-        if (current == null)
-        {
-            throw new NotFoundException("Item not found");
-        }
-
-        this.db.Entry(current).CurrentValues.SetValues(snippet);
         await this.db.SaveChangesAsync();
 
         return snippet;

@@ -12,6 +12,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Snippet> Snippets { get; set; }
 
+    public DbSet<PageSnippet> PagesSnippets { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
@@ -20,14 +22,16 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CreativeConfiguration).Assembly);
-        modelBuilder.Entity<Page>()
-                .HasMany(c => c.Snippets)
-                .WithMany(s => s.Pages)
-                .UsingEntity(j => j.ToTable("PageSnippet"));
 
-        foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-        {
-            relationship.DeleteBehavior = DeleteBehavior.Restrict;
-        }
+        modelBuilder.Entity<Creative>()
+            .HasDiscriminator()
+            .HasValue<Page>("Page")
+            .HasValue<Snippet>("Snippets");
+
+        modelBuilder.Entity<Page>()
+            .HasMany(c => c.PageSnippets)
+            .WithOne()
+            .HasForeignKey(ps => ps.PageId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

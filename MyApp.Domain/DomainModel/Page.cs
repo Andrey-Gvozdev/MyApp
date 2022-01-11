@@ -5,7 +5,7 @@ namespace MyApp.Domain.DomainModel;
 public class Page : Creative
 {
     [SwaggerSchema(ReadOnly = true)]
-    public List<Snippet>? Snippets { get; set; } = new List<Snippet>();
+    public List<PageSnippet>? PageSnippets { get; set; } = new List<PageSnippet>();
 
     public Page(string name, string content)
         : base(name, content)

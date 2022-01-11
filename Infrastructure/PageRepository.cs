@@ -17,7 +17,7 @@ public class PageRepository : IPageRepository
 
     public Task<List<Page>> GetListAsync()
     {
-        return this.db.Pages.Include(u => u.Snippets).AsNoTracking().ToListAsync();
+        return this.db.Pages.AsNoTracking().ToListAsync();
     }
 
     public async Task<Page> Create(Page page)
@@ -35,20 +35,20 @@ public class PageRepository : IPageRepository
 
     public Task<Page> Get(int id)
     {
-        return this.db.Pages.Include(u => u.Snippets).FirstOrDefaultAsync(x => x.Id == id);
+        return this.db.Pages.FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Page> Update(Page page, int id)
     {
         page.Id = id;
-        var current = await this.db.Pages.Include(u => u.Snippets).FirstOrDefaultAsync(x => x.Id == page.Id);
+        var current = await this.db.Pages.FirstOrDefaultAsync(x => x.Id == page.Id);
 
         if (current == null)
         {
             throw new NotFoundException("Item not found");
         }
 
-        if (current.Snippets?.Count > 0)
+        /*if (current.Snippets?.Count > 0)
         {
             foreach (var item in current.Snippets)
             {
@@ -57,7 +57,7 @@ public class PageRepository : IPageRepository
         }
 
         page.Snippets = current.Snippets;
-        page = this.snippetService.FillSnippetsList(page);
+        page = this.snippetService.FillSnippetsList(page);*/
 
         this.db.Entry(current).CurrentValues.SetValues(page);
         await this.db.SaveChangesAsync();
