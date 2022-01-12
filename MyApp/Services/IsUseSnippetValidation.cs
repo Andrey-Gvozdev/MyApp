@@ -3,7 +3,7 @@ using System.Text;
 using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
 
-namespace Infrastructure;
+namespace MyApp.Services;
 
 public class IsUseSnippetValidation : IIsUseSnippetValidation
 {

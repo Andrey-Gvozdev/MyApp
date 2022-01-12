@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.DomainModel;
 
-namespace Infrastructure;
+namespace Infrastructure.Repository;
 public class SnippetRepository : ISnippetRepository
 {
     private readonly ApplicationDbContext db;

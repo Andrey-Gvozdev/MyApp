@@ -1,8 +1,11 @@
 ﻿using Infrastructure;
+using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
+using MyApp.Domain.Services.CRUDServices;
 using MyApp.Middleware;
+using MyApp.Services;
 
 namespace MyApp;
 public class Startup
@@ -27,6 +30,7 @@ public class Startup
             options.EnableAnnotations();
         });
 
+        services.AddTransient<ICreativeRepository, CreativeRepository>();
         services.AddTransient<IPageRepository, PageRepository>();
         services.AddTransient<IPageCrudService, PageCrudService>();
         services.AddTransient<IValidationCreativeNameService, ValidationCreativeNameService>();

@@ -1,6 +1,6 @@
 ﻿using MyApp.Domain.DomainModel;
 
-namespace MyApp.Domain.Services;
+namespace MyApp.Domain.Services.CRUDServices;
 public interface ISnippetCrudService
 {
     Task<Snippet> Create(Snippet snippet);

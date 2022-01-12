@@ -1,7 +1,7 @@
-﻿using MyApp.CustomExceptions;
+﻿using MyApp.Domain.CustomExceptions;
 using MyApp.Domain.DomainModel;
 
-namespace MyApp.Domain.Services;
+namespace MyApp.Domain.Services.CRUDServices;
 public class SnippetCrudService : ISnippetCrudService
 {
     private readonly ISnippetRepository snippetRepository;

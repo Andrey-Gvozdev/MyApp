@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyApp.Domain.DomainModel;
-using MyApp.Domain.Services;
+using MyApp.Domain.Services.CRUDServices;
 
 namespace MyApp.Controllers;
 [ApiController]

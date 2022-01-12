@@ -1,16 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-using MyApp.Domain;
+using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
 
-namespace Infrastructure;
+namespace MyApp.Services;
 public class ValidationCreativeNameService : IValidationCreativeNameService
 {
-    private readonly ApplicationDbContext db;
+    private readonly ICreativeRepository creativeRepository;
 
-    public ValidationCreativeNameService(ApplicationDbContext context)
+    public ValidationCreativeNameService(ICreativeRepository repository)
     {
-        this.db = context;
+        this.creativeRepository = repository;
     }
 
     public async Task ValidationCreativeName(Creative creative)
@@ -20,7 +19,7 @@ public class ValidationCreativeNameService : IValidationCreativeNameService
             throw new ValidationException("Name field is empty");
         }
 
-        if (await this.db.Creatives.AnyAsync(x => x.Name == creative.Name && x.Id != creative.Id))
+        if (await this.creativeRepository.CreativeNameIsUnique(creative))
         {
             throw new ValidationException("This name is already taken");
         }

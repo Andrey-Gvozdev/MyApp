@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyApp.Domain;
 using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
 

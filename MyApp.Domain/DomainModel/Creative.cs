@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace MyApp.Domain;
+namespace MyApp.Domain.DomainModel;
 public abstract class Creative
 {
     [SwaggerSchema(ReadOnly = true)]

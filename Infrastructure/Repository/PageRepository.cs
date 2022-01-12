@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.DomainModel;
 
-namespace Infrastructure;
+namespace Infrastructure.Repository;
 public class PageRepository : IPageRepository
 {
     private readonly ApplicationDbContext db;
