@@ -37,6 +37,7 @@ public class Startup
         services.AddTransient<IPageSnippetListFillingService, PageSnippetListFillingService>();
         services.AddTransient<ISnippetRepository, SnippetRepository>();
         services.AddTransient<ISnippetCrudService, SnippetCrudService>();
+        services.AddTransient<IDeleteSnippetValidation, DeleteSnippetValidation>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

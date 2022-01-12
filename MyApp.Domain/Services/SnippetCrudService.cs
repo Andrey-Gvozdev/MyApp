@@ -6,11 +6,13 @@ public class SnippetCrudService : ISnippetCrudService
 {
     private readonly ISnippetRepository snippetRepository;
     private readonly IValidationCreativeNameService validationService;
+    private readonly IDeleteSnippetValidation deleteSnippetValidation;
 
-    public SnippetCrudService(ISnippetRepository repository, IValidationCreativeNameService validation)
+    public SnippetCrudService(ISnippetRepository repository, IValidationCreativeNameService validation, IDeleteSnippetValidation deleteSnippet)
     {
         this.snippetRepository = repository;
         this.validationService = validation;
+        this.deleteSnippetValidation = deleteSnippet;
     }
 
     public async Task<Snippet> Create(Snippet snippet)
@@ -24,7 +26,8 @@ public class SnippetCrudService : ISnippetCrudService
     {
         var snippet = await this.GetSnippet(id);
 
-        await this.validationService.ValidationSnippet(snippet);
+        this.deleteSnippetValidation.ValidationSnippet(snippet);
+
         await this.snippetRepository.Delete(snippet);
 
         return snippet;
@@ -50,7 +53,6 @@ public class SnippetCrudService : ISnippetCrudService
 
         if (current.Name != snippet.Name)
         {
-            await this.validationService.ValidationSnippet(current);
         }
 
         await this.snippetRepository.Update(snippet);
