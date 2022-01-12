@@ -7,5 +7,5 @@ public interface ISnippetService
 
     List<int> SnippetValidation(IEnumerable<string> snippetNames);
 
-    Page FillSnippetsList(Page page);
+    Task<Page> FillSnippetsList(Page page);
 }

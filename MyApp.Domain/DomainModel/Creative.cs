@@ -14,7 +14,7 @@ public abstract class Creative
 
     public Creative(string name, string content)
     {
-        this.Name = name;
+        this.SetName(name);
         this.SetContent(content);
     }
 

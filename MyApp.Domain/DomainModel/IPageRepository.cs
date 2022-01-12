@@ -7,7 +7,7 @@ public interface IPageRepository
 
     Task<Page> Get(int id);
 
-    Task<Page> Update(Page page, int id);
+    Task<Page> Update(Page page);
 
     Task Delete(Page page);
 }

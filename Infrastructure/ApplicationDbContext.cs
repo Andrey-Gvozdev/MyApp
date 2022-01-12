@@ -31,7 +31,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Page>()
             .HasMany(c => c.PageSnippets)
             .WithOne()
-            .HasForeignKey(ps => ps.PageId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .HasForeignKey(ps => ps.PageId);
     }
 }

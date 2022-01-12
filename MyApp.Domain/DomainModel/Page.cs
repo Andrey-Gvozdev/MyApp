@@ -5,7 +5,7 @@ namespace MyApp.Domain.DomainModel;
 public class Page : Creative
 {
     [SwaggerSchema(ReadOnly = true)]
-    public List<PageSnippet>? PageSnippets { get; set; } = new List<PageSnippet>();
+    public List<PageSnippet> PageSnippets { get; set; } = new List<PageSnippet>();
 
     public Page(string name, string content)
         : base(name, content)
@@ -15,6 +15,19 @@ public class Page : Creative
     public override void SetContent(string content)
     {
         this.Content = CorrectHtml(content);
+    }
+
+    public void SetPageSnippetList(List<PageSnippet> pageSnippetList)
+    {
+        this.PageSnippets = new List<PageSnippet>();
+
+        if (pageSnippetList.Count > 0)
+        {
+            foreach (var item in pageSnippetList)
+            {
+                this.PageSnippets.Add(item);
+            }
+        }
     }
 
     private static string CorrectHtml(string content)

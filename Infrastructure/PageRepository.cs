@@ -1,32 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyApp.CustomExceptions;
 using MyApp.Domain.DomainModel;
-using MyApp.Domain.Services;
 
 namespace Infrastructure;
 public class PageRepository : IPageRepository
 {
     private readonly ApplicationDbContext db;
-    private readonly ISnippetService snippetService;
 
-    public PageRepository(ApplicationDbContext context, ISnippetService snippet)
+    public PageRepository(ApplicationDbContext context)
     {
         this.db = context;
-        this.snippetService = snippet;
     }
 
     public Task<List<Page>> GetListAsync()
     {
-        return this.db.Pages.AsNoTracking().ToListAsync();
+        return this.db.Pages.Include(p => p.PageSnippets).AsNoTracking().ToListAsync();
     }
 
     public async Task<Page> Create(Page page)
     {
-        if (page.Content.Contains("#SNIPPET."))
-        {
-            page = this.snippetService.FillSnippetsList(page);
-        }
-
         await this.db.Pages.AddAsync(page);
         await this.db.SaveChangesAsync();
 
@@ -35,31 +26,17 @@ public class PageRepository : IPageRepository
 
     public Task<Page> Get(int id)
     {
-        return this.db.Pages.FirstOrDefaultAsync(x => x.Id == id);
+        return this.db.Pages.Include(p => p.PageSnippets).FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<Page> Update(Page page, int id)
+    public async Task<Page> Update(Page page)
     {
-        page.Id = id;
-        var current = await this.db.Pages.FirstOrDefaultAsync(x => x.Id == page.Id);
+        var current = await this.Get(page.Id);
 
-        if (current == null)
-        {
-            throw new NotFoundException("Item not found");
-        }
+        current.SetName(page.Name);
+        current.SetContent(page.Content);
+        current.SetPageSnippetList(page.PageSnippets);
 
-        /*if (current.Snippets?.Count > 0)
-        {
-            foreach (var item in current.Snippets)
-            {
-                page.Snippets?.Add(item);
-            }
-        }
-
-        page.Snippets = current.Snippets;
-        page = this.snippetService.FillSnippetsList(page);*/
-
-        this.db.Entry(current).CurrentValues.SetValues(page);
         await this.db.SaveChangesAsync();
 
         return current;
@@ -67,15 +44,6 @@ public class PageRepository : IPageRepository
 
     public async Task Delete(Page page)
     {
-        var id = page.Id;
-
-        var newPage = new Page(page.Name, "")
-        {
-            Id = id,
-        };
-
-        this.db.Entry(page).CurrentValues.SetValues(newPage);
-
         this.db.Pages.Remove(page);
         await this.db.SaveChangesAsync();
     }

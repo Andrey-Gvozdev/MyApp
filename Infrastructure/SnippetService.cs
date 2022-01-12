@@ -42,13 +42,22 @@ public class SnippetService : ISnippetService
         return listSnippets;
     }
 
-    public Page FillSnippetsList(Page page)
+    public async Task<Page> FillSnippetsList(Page page)
     {
         var snippets = this.SnippetValidation(this.FindSnippetNames(page.Content));
 
-        foreach (var item in snippets)
+        if (page.PageSnippets.Count > 0)
         {
-            page.PageSnippets?.Add(new PageSnippet(item));
+            page.PageSnippets.Clear();
+        }
+        else
+        {
+            foreach (var item in snippets)
+            {
+                page.PageSnippets?.Add(new PageSnippet(item));
+            }
+
+            await this.db.SaveChangesAsync();
         }
 
         return page;
