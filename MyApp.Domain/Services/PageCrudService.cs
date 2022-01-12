@@ -6,9 +6,9 @@ public class PageCrudService : IPageCrudService
 {
     private readonly IPageRepository pageRepository;
     private readonly IValidationService validationService;
-    private readonly ISnippetService snippetService;
+    private readonly IPageSnippetListFillingService snippetService;
 
-    public PageCrudService(IPageRepository repository, IValidationService validation, ISnippetService snippet)
+    public PageCrudService(IPageRepository repository, IValidationService validation, IPageSnippetListFillingService snippet)
     {
         this.pageRepository = repository;
         this.validationService = validation;
@@ -21,7 +21,7 @@ public class PageCrudService : IPageCrudService
 
         if (page.Content.Contains("#SNIPPET."))
         {
-            page = await this.snippetService.FillSnippetsList(page);
+            page = await this.snippetService.FillPageSnippetList(page);
         }
 
         page = await this.pageRepository.Create(page);
@@ -49,7 +49,7 @@ public class PageCrudService : IPageCrudService
     {
         page.Id = id;
 
-        page = await this.snippetService.FillSnippetsList(page);
+        page = await this.snippetService.FillPageSnippetList(page);
         await this.validationService.ValidationCreativeName(page);
 
         await this.pageRepository.Update(page);

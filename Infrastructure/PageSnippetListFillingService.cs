@@ -3,11 +3,11 @@ using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
 
 namespace Infrastructure;
-public class SnippetService : ISnippetService
+public class PageSnippetListFillingService : IPageSnippetListFillingService
 {
     private readonly ApplicationDbContext db;
 
-    public SnippetService(ApplicationDbContext context)
+    public PageSnippetListFillingService(ApplicationDbContext context)
     {
         this.db = context;
     }
@@ -25,7 +25,7 @@ public class SnippetService : ISnippetService
         }
     }
 
-    public List<int> SnippetValidation(IEnumerable<string> snippetNames)
+    public List<int> CreateSnippetIdList(IEnumerable<string> snippetNames)
     {
         var listSnippets = new List<int>();
 
@@ -42,9 +42,9 @@ public class SnippetService : ISnippetService
         return listSnippets;
     }
 
-    public async Task<Page> FillSnippetsList(Page page)
+    public async Task<Page> FillPageSnippetList(Page page)
     {
-        var snippets = this.SnippetValidation(this.FindSnippetNames(page.Content));
+        var snippets = this.CreateSnippetIdList(this.FindSnippetNames(page.Content));
 
         if (page.PageSnippets.Count > 0)
         {
