@@ -4,7 +4,7 @@ using MyApp.Domain.Services;
 
 namespace MyApp.Controllers;
 [ApiController]
-[Route("api/[controller]/[action]")]
+[Route("api/snippet")]
 [Produces("application/json")]
 public class SnippetController : Controller
 {
@@ -18,19 +18,19 @@ public class SnippetController : Controller
     }
 
     [HttpGet]
-    public Task<List<Snippet>> GetList()
+    public Task<List<Snippet>> Get()
     {
         return this.snippetRepository.GetListAsync();
     }
 
     [HttpPost]
-    public Task<Snippet> Create(Snippet snippet)
+    public Task<Snippet> Post(Snippet snippet)
     {
         return this.snippetCrudService.Create(snippet);
     }
 
-    [HttpGet]
-    public Task<Snippet> GetById(int snippetId)
+    [HttpGet("{snippetId}")]
+    public Task<Snippet> Get(int snippetId)
     {
         return this.snippetCrudService.GetById(snippetId);
     }
@@ -42,8 +42,8 @@ public class SnippetController : Controller
     }
 
     [HttpPut]
-    public Task<Snippet> Update(int snippetId, Snippet snippet)
+    public Task<Snippet> Put(int snippetId, string content)
     {
-        return this.snippetCrudService.Update(snippetId, snippet);
+        return this.snippetCrudService.Update(snippetId, content);
     }
 }

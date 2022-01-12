@@ -5,7 +5,7 @@ using MyApp.Domain.Services;
 namespace MyApp.Controllers;
 
 [ApiController]
-[Route("api/[controller]/[action]")]
+[Route("api/page")]
 [Produces("application/json")]
 public class PageController : Controller
 {
@@ -19,19 +19,19 @@ public class PageController : Controller
     }
 
     [HttpGet]
-    public Task<List<Page>> GetList()
+    public Task<List<Page>> Get()
     {
         return this.pageRepository.GetListAsync();
     }
 
     [HttpPost]
-    public Task<Page> Create(Page page)
+    public Task<Page> Post(Page page)
     {
         return this.pageCrudService.Create(page);
     }
 
-    [HttpGet]
-    public Task<Page> GetById(int pageId)
+    [HttpGet("{pageId}")]
+    public Task<Page> Get(int pageId)
     {
         return this.pageCrudService.GetById(pageId);
     }
@@ -43,7 +43,7 @@ public class PageController : Controller
     }
 
     [HttpPut]
-    public Task<Page> Update(int pageId, Page page)
+    public Task<Page> Put(int pageId, Page page)
     {
         return this.pageCrudService.Update(pageId, page);
     }

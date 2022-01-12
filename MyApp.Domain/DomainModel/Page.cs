@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using System.Text.RegularExpressions;
+using HtmlAgilityPack;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MyApp.Domain.DomainModel;
@@ -17,17 +18,27 @@ public class Page : Creative
         this.Content = CorrectHtml(content);
     }
 
-    public void SetPageSnippetList(List<PageSnippet> pageSnippetList)
+    public void SetPageSnippetList()
     {
-        this.PageSnippets = new List<PageSnippet>();
+        IEnumerable<string> snippetNamesList = this.FindSnippetNames(this.Content);
 
-        if (pageSnippetList.Count > 0)
+        if (snippetNamesList.Any())
         {
-            foreach (var item in pageSnippetList)
+            this.PageSnippets = new List<PageSnippet>();
+
+            foreach (var item in snippetNamesList)
             {
-                this.PageSnippets.Add(item);
+                this.PageSnippets.Add(new PageSnippet(item));
             }
         }
+    }
+
+    public IEnumerable<string> FindSnippetNames(string content)
+    {
+        Regex regex = new ("#SNIPPET.([^#]+)#");
+        MatchCollection matches = regex.Matches(content);
+
+        return matches.Select(x => x.Groups[1].Value);
     }
 
     private static string CorrectHtml(string content)

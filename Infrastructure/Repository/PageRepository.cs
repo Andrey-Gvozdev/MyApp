@@ -29,17 +29,9 @@ public class PageRepository : IPageRepository
         return this.db.Pages.Include(p => p.PageSnippets).FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<Page> Update(Page page)
+    public Task SaveChanges()
     {
-        var current = await this.Get(page.Id);
-
-        current.SetName(page.Name);
-        current.SetContent(page.Content);
-        current.SetPageSnippetList(page.PageSnippets);
-
-        await this.db.SaveChangesAsync();
-
-        return current;
+        return this.db.SaveChangesAsync();
     }
 
     public async Task Delete(Page page)

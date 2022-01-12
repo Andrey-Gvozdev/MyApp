@@ -9,5 +9,5 @@ public interface ISnippetCrudService
 
     Task<Snippet> Delete(int id);
 
-    Task<Snippet> Update(int id, Snippet snippet);
+    Task<Snippet> Update(int id, string content);
 }

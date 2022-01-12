@@ -7,24 +7,23 @@ namespace Infrastructure;
 
 public class IsUseSnippetValidation : IIsUseSnippetValidation
 {
-    private readonly ApplicationDbContext db;
+    private readonly ISnippetRepository snippetRepository;
 
-    public IsUseSnippetValidation(ApplicationDbContext context)
+    public IsUseSnippetValidation(ISnippetRepository repository)
     {
-        this.db = context;
+        this.snippetRepository = repository;
     }
 
-    public void ValidationSnippet(Snippet snippet)
+    public void ValidationSnippet(string snippetName)
     {
-        var current = this.db.PagesSnippets.Where(pc => pc.SnippetId == snippet.Id).ToList();
-
-        if (current != null)
+        var listIdPages = this.snippetRepository.IsSnippetContains(snippetName);
+        if (listIdPages != null)
         {
             var message = new StringBuilder("This snippet is used in some pages: ", 60);
 
-            foreach (var item in current)
+            foreach (var item in listIdPages)
             {
-                message.Append(item.SnippetId);
+                message.Append(item);
                 message.Append(' ');
             }
 

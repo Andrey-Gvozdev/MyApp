@@ -29,21 +29,19 @@ public class SnippetRepository : ISnippetRepository
         return this.db.Snippets.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<Snippet> Update(Snippet snippet)
+    public Task SaveChanges()
     {
-        var current = await this.Get(snippet.Id);
-
-        current.SetName(snippet.Name);
-        current.SetContent(snippet.Content);
-
-        await this.db.SaveChangesAsync();
-
-        return snippet;
+        return this.db.SaveChangesAsync();
     }
 
     public async Task Delete(Snippet snippet)
     {
         this.db.Snippets.Remove(snippet);
         await this.db.SaveChangesAsync();
+    }
+
+    public List<int> IsSnippetContains(string snippetName)
+    {
+        return this.db.Pages.Where(x => x.PageSnippets.Any(x => x.SnippetName == snippetName)).Select(x => x.Id).ToList();
     }
 }

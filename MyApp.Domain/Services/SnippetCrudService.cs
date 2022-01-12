@@ -26,7 +26,7 @@ public class SnippetCrudService : ISnippetCrudService
     {
         var snippet = await this.GetSnippet(id);
 
-        this.isUseSnippetValidation.ValidationSnippet(snippet);
+        this.isUseSnippetValidation.ValidationSnippet(snippet.Name);
 
         await this.snippetRepository.Delete(snippet);
 
@@ -38,21 +38,15 @@ public class SnippetCrudService : ISnippetCrudService
         return this.GetSnippet(id);
     }
 
-    public async Task<Snippet> Update(int id, Snippet snippet)
+    public async Task<Snippet> Update(int id, string content)
     {
-        snippet.Id = id;
+        var current = await this.GetSnippet(id);
 
-        var current = await this.GetSnippet(snippet.Id);
+        current.SetContent(content);
 
-        if (current.Name != snippet.Name)
-        {
-            await this.validationService.ValidationCreativeName(snippet);
-            this.isUseSnippetValidation.ValidationSnippet(snippet);
-        }
+        await this.snippetRepository.SaveChanges();
 
-        await this.snippetRepository.Update(snippet);
-
-        return snippet;
+        return current;
     }
 
     private async Task<Snippet> GetSnippet(int id)

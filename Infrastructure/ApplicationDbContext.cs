@@ -12,8 +12,6 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Snippet> Snippets { get; set; }
 
-    public DbSet<PageSnippet> PagesSnippets { get; set; }
-
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {

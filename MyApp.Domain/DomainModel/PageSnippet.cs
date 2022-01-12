@@ -6,11 +6,11 @@
 
         public int PageId { get; set; }
 
-        public int SnippetId { get; set; }
+        public string SnippetName { get; set; }
 
-        public PageSnippet(int snippetId)
+        public PageSnippet(string snippetName)
         {
-            this.SnippetId = snippetId;
+            this.SnippetName = snippetName;
         }
     }
 }

@@ -7,7 +7,9 @@ public interface ISnippetRepository
 
     Task<Snippet> Get(int snippetId);
 
-    Task<Snippet> Update(Snippet snippet);
+    Task SaveChanges();
 
     Task Delete(Snippet snippet);
+
+    List<int> IsSnippetContains(string snippetName);
 }
