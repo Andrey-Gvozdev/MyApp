@@ -14,15 +14,10 @@ public class PageSnippetListFillingService : IPageSnippetListFillingService
 
     public IEnumerable<string> FindSnippetNames(string content)
     {
-        var start = "#SNIPPET.";
-        var end = "#";
-
-        Regex regex = new (Regex.Escape(start) + "(.*?)" + Regex.Escape(end));
+        Regex regex = new ("#SNIPPET.([^#]+)#");
         MatchCollection matches = regex.Matches(content);
-        foreach (Match match in matches)
-        {
-            yield return match.Groups[1].Value;
-        }
+
+        return matches.Select(x => x.Groups[1].Value);
     }
 
     public List<int> CreateSnippetIdList(IEnumerable<string> snippetNames)
