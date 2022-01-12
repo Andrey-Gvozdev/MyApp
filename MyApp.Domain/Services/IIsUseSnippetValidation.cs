@@ -2,7 +2,7 @@
 
 namespace MyApp.Domain.Services;
 
-public interface IDeleteSnippetValidation
+public interface IIsUseSnippetValidation
 {
     void ValidationSnippet(Snippet snippet);
 }

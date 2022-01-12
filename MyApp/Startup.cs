@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Infrastructure;
+﻿using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
@@ -23,9 +22,6 @@ public class Startup
 
         services.AddControllers();
 
-        services.AddControllers().AddJsonOptions(x =>
-                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-
         services.AddSwaggerGen(options =>
         {
             options.EnableAnnotations();
@@ -37,7 +33,7 @@ public class Startup
         services.AddTransient<IPageSnippetListFillingService, PageSnippetListFillingService>();
         services.AddTransient<ISnippetRepository, SnippetRepository>();
         services.AddTransient<ISnippetCrudService, SnippetCrudService>();
-        services.AddTransient<IDeleteSnippetValidation, DeleteSnippetValidation>();
+        services.AddTransient<IIsUseSnippetValidation, IsUseSnippetValidation>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

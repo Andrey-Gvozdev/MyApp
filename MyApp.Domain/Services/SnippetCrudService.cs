@@ -6,13 +6,13 @@ public class SnippetCrudService : ISnippetCrudService
 {
     private readonly ISnippetRepository snippetRepository;
     private readonly IValidationCreativeNameService validationService;
-    private readonly IDeleteSnippetValidation deleteSnippetValidation;
+    private readonly IIsUseSnippetValidation isUseSnippetValidation;
 
-    public SnippetCrudService(ISnippetRepository repository, IValidationCreativeNameService validation, IDeleteSnippetValidation deleteSnippet)
+    public SnippetCrudService(ISnippetRepository repository, IValidationCreativeNameService validation, IIsUseSnippetValidation isUseSnippet)
     {
         this.snippetRepository = repository;
         this.validationService = validation;
-        this.deleteSnippetValidation = deleteSnippet;
+        this.isUseSnippetValidation = isUseSnippet;
     }
 
     public async Task<Snippet> Create(Snippet snippet)
@@ -26,7 +26,7 @@ public class SnippetCrudService : ISnippetCrudService
     {
         var snippet = await this.GetSnippet(id);
 
-        this.deleteSnippetValidation.ValidationSnippet(snippet);
+        this.isUseSnippetValidation.ValidationSnippet(snippet);
 
         await this.snippetRepository.Delete(snippet);
 
@@ -44,15 +44,10 @@ public class SnippetCrudService : ISnippetCrudService
 
         var current = await this.GetSnippet(snippet.Id);
 
-        if (current == null)
-        {
-            throw new NotFoundException("Item not found");
-        }
-
-        await this.validationService.ValidationCreativeName(snippet);
-
         if (current.Name != snippet.Name)
         {
+            await this.validationService.ValidationCreativeName(snippet);
+            this.isUseSnippetValidation.ValidationSnippet(snippet);
         }
 
         await this.snippetRepository.Update(snippet);

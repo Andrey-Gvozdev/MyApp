@@ -5,11 +5,11 @@ using MyApp.Domain.Services;
 
 namespace Infrastructure;
 
-public class DeleteSnippetValidation : IDeleteSnippetValidation
+public class IsUseSnippetValidation : IIsUseSnippetValidation
 {
     private readonly ApplicationDbContext db;
 
-    public DeleteSnippetValidation(ApplicationDbContext context)
+    public IsUseSnippetValidation(ApplicationDbContext context)
     {
         this.db = context;
     }

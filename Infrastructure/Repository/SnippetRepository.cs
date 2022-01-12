@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.DomainModel;
-using MyApp.Domain.Services;
 
 namespace Infrastructure;
 public class SnippetRepository : ISnippetRepository
