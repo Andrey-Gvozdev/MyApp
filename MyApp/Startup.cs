@@ -33,7 +33,7 @@ public class Startup
 
         services.AddTransient<IPageRepository, PageRepository>();
         services.AddTransient<IPageCrudService, PageCrudService>();
-        services.AddTransient<IValidationService, ValidationService>();
+        services.AddTransient<IValidationCreativeNameService, ValidationCreativeNameService>();
         services.AddTransient<IPageSnippetListFillingService, PageSnippetListFillingService>();
         services.AddTransient<ISnippetRepository, SnippetRepository>();
         services.AddTransient<ISnippetCrudService, SnippetCrudService>();

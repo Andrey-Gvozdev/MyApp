@@ -1,15 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain;
-using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
 
 namespace Infrastructure;
-public class ValidationService : IValidationService
+public class ValidationCreativeNameService : IValidationCreativeNameService
 {
     private readonly ApplicationDbContext db;
 
-    public ValidationService(ApplicationDbContext context)
+    public ValidationCreativeNameService(ApplicationDbContext context)
     {
         this.db = context;
     }
@@ -30,20 +29,5 @@ public class ValidationService : IValidationService
         {
             throw new ValidationException("Name field must be less than 30 characters");
         }
-    }
-
-    public async Task ValidationSnippet(Snippet snippet)
-    {
-        //var current = await this.db.Snippets.Include(u => u.Pages).FirstOrDefaultAsync(x => x.Id == snippet.Id);
-        /*if (current?.Pages?.Count > 0)
-        {
-            string pagesId = "";
-            foreach (var page in current.Pages)
-            {
-                pagesId += page.Id + " ";
-            }
-
-            throw new ValidationException("This snippet(" + snippet.Id + ") is used in some pages: " + pagesId);
-        }*/
     }
 }

@@ -5,10 +5,10 @@ namespace MyApp.Domain.Services;
 public class PageCrudService : IPageCrudService
 {
     private readonly IPageRepository pageRepository;
-    private readonly IValidationService validationService;
+    private readonly IValidationCreativeNameService validationService;
     private readonly IPageSnippetListFillingService snippetService;
 
-    public PageCrudService(IPageRepository repository, IValidationService validation, IPageSnippetListFillingService snippet)
+    public PageCrudService(IPageRepository repository, IValidationCreativeNameService validation, IPageSnippetListFillingService snippet)
     {
         this.pageRepository = repository;
         this.validationService = validation;

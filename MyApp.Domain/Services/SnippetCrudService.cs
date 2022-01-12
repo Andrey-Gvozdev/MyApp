@@ -5,9 +5,9 @@ namespace MyApp.Domain.Services;
 public class SnippetCrudService : ISnippetCrudService
 {
     private readonly ISnippetRepository snippetRepository;
-    private readonly IValidationService validationService;
+    private readonly IValidationCreativeNameService validationService;
 
-    public SnippetCrudService(ISnippetRepository repository, IValidationService validation)
+    public SnippetCrudService(ISnippetRepository repository, IValidationCreativeNameService validation)
     {
         this.snippetRepository = repository;
         this.validationService = validation;
