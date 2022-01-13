@@ -14,9 +14,9 @@ public class IsUseSnippetValidation : IIsUseSnippetValidation
         this.snippetRepository = repository;
     }
 
-    public void ValidationSnippet(string snippetName)
+    public async Task ValidationSnippet(string snippetName)
     {
-        var listIdPages = this.snippetRepository.IsSnippetContains(snippetName);
+        var listIdPages = await this.snippetRepository.GetRelatedPageIds(snippetName);
         if (listIdPages != null)
         {
             var message = new StringBuilder("This snippet is used in some pages: ", 60);

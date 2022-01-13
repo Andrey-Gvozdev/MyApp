@@ -40,8 +40,8 @@ public class SnippetRepository : ISnippetRepository
         await this.db.SaveChangesAsync();
     }
 
-    public List<int> IsSnippetContains(string snippetName)
+    public Task<List<int>> GetRelatedPageIds(string snippetName)
     {
-        return this.db.Pages.Where(x => x.PageSnippets.Any(x => x.SnippetName == snippetName)).Select(x => x.Id).ToList();
+        return this.db.Pages.Where(x => x.PageSnippets.Any(x => x.SnippetName == snippetName)).Select(x => x.Id).ToListAsync();
     }
 }

@@ -2,5 +2,5 @@
 
 public interface IIsUseSnippetValidation
 {
-    void ValidationSnippet(string snippetName);
+    Task ValidationSnippet(string snippetName);
 }

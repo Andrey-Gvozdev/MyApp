@@ -16,24 +16,10 @@ public class Page : Creative
     public override void SetContent(string content)
     {
         this.Content = CorrectHtml(content);
+        this.SetPageSnippetList();
     }
 
-    public void SetPageSnippetList()
-    {
-        IEnumerable<string> snippetNamesList = this.FindSnippetNames(this.Content);
-
-        if (snippetNamesList.Any())
-        {
-            this.PageSnippets = new List<PageSnippet>();
-
-            foreach (var item in snippetNamesList)
-            {
-                this.PageSnippets.Add(new PageSnippet(item));
-            }
-        }
-    }
-
-    public IEnumerable<string> FindSnippetNames(string content)
+    private static IEnumerable<string> FindSnippetNames(string content)
     {
         Regex regex = new ("#SNIPPET.([^#]+)#");
         MatchCollection matches = regex.Matches(content);
@@ -81,5 +67,20 @@ public class Page : Creative
         }
 
         return res;
+    }
+
+    private void SetPageSnippetList()
+    {
+        IEnumerable<string> snippetNamesList = FindSnippetNames(this.Content);
+
+        if (snippetNamesList.Any())
+        {
+            this.PageSnippets = new List<PageSnippet>();
+
+            foreach (var item in snippetNamesList)
+            {
+                this.PageSnippets.Add(new PageSnippet(item));
+            }
+        }
     }
 }

@@ -47,7 +47,6 @@ public class PageCrudService : IPageCrudService
 
         current.SetName(page.Name);
         current.SetContent(page.Content);
-        current.SetPageSnippetList();
 
         await this.pageRepository.SaveChanges();
 
