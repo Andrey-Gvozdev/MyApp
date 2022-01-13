@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211215160126_migratin2")]
-    partial class migratin2
+    [Migration("20220111162109_migration")]
+    partial class migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,33 +31,75 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Creatives");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Creative");
                 });
 
+            modelBuilder.Entity("MyApp.Domain.DomainModel.PageSnippet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("PageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SnippetId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PageId");
+
+                    b.ToTable("PagesSnippets");
+                });
+
             modelBuilder.Entity("MyApp.Domain.DomainModel.Page", b =>
                 {
                     b.HasBaseType("MyApp.Domain.Creative");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasDiscriminator().HasValue("Page");
+                });
+
+            modelBuilder.Entity("MyApp.Domain.DomainModel.Snippet", b =>
+                {
+                    b.HasBaseType("MyApp.Domain.Creative");
+
+                    b.HasDiscriminator().HasValue("Snippets");
+                });
+
+            modelBuilder.Entity("MyApp.Domain.DomainModel.PageSnippet", b =>
+                {
+                    b.HasOne("MyApp.Domain.DomainModel.Page", null)
+                        .WithMany("PageSnippets")
+                        .HasForeignKey("PageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MyApp.Domain.DomainModel.Page", b =>
+                {
+                    b.Navigation("PageSnippets");
                 });
 #pragma warning restore 612, 618
         }

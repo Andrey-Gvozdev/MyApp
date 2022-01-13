@@ -1,17 +1,30 @@
-﻿using HtmlAgilityPack;
+﻿using System.Text.RegularExpressions;
+using HtmlAgilityPack;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MyApp.Domain.DomainModel;
 public class Page : Creative
 {
+    [SwaggerSchema(ReadOnly = true)]
+    public List<PageSnippet> PageSnippets { get; set; } = new List<PageSnippet>();
+
     public Page(string name, string content)
         : base(name, content)
     {
-        this.SetContent(content);
     }
 
     public override void SetContent(string content)
     {
         this.Content = CorrectHtml(content);
+        this.SetPageSnippetList();
+    }
+
+    private static IEnumerable<string> FindSnippetNames(string content)
+    {
+        Regex regex = new ("#SNIPPET.([^#]+)#");
+        MatchCollection matches = regex.Matches(content);
+
+        return matches.Select(x => x.Groups[1].Value);
     }
 
     private static string CorrectHtml(string content)
@@ -54,5 +67,20 @@ public class Page : Creative
         }
 
         return res;
+    }
+
+    private void SetPageSnippetList()
+    {
+        IEnumerable<string> snippetNamesList = FindSnippetNames(this.Content);
+
+        if (snippetNamesList.Any())
+        {
+            this.PageSnippets = new List<PageSnippet>();
+
+            foreach (var item in snippetNamesList)
+            {
+                this.PageSnippets.Add(new PageSnippet(item));
+            }
+        }
     }
 }

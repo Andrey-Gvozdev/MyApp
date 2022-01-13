@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using MyApp.CustomExceptions;
+﻿using MyApp.Domain.CustomExceptions;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Middleware;
 public class CreativeValidationMiddleware
