@@ -7,6 +7,8 @@ public interface ISnippetRepository
 
     Task<Snippet> Get(int snippetId);
 
+    Task<Snippet> Get(string snippetName);
+
     Task SaveChanges();
 
     Task Delete(Snippet snippet);
