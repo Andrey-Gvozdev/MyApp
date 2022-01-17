@@ -1,7 +1,5 @@
-﻿namespace ContentApp.Domain
+﻿namespace ContentApp.Domain;
+public interface IPageRepository
 {
-    public interface IPageRepository
-    {
-        Task<List<Page>> GetListAsync();
-    }
+    Task<List<Page>> GetListAsync();
 }

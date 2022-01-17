@@ -1,20 +1,18 @@
 ﻿using ContentApp.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace ContentApp.Infrastructure.Repository
+namespace ContentApp.Infrastructure.Repository;
+public class PageRepository : IPageRepository
 {
-    public class PageRepository : IPageRepository
+    private readonly ContentAppDbContext db;
+
+    public PageRepository(ContentAppDbContext context)
     {
-        private readonly ContentAppDbContext db;
+        this.db = context;
+    }
 
-        public PageRepository(ContentAppDbContext context)
-        {
-            this.db = context;
-        }
-
-        public Task<List<Page>> GetListAsync()
-        {
-            return this.db.Pages.AsNoTracking().ToListAsync();
-        }
+    public Task<List<Page>> GetListAsync()
+    {
+        return this.db.Pages.AsNoTracking().ToListAsync();
     }
 }
