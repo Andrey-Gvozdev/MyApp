@@ -1,16 +1,21 @@
 ﻿using MyApp.Domain.CustomExceptions;
 using MyApp.Domain.DomainModel;
+using Rebus.Bus;
 
 namespace MyApp.Domain.Services.CRUDServices;
 public class PageCrudService : IPageCrudService
 {
     private readonly IPageRepository pageRepository;
     private readonly IValidationCreativeNameService validationService;
+    private readonly IBus bus;
+    private readonly IRenderingPage renderingPage;
 
-    public PageCrudService(IPageRepository repository, IValidationCreativeNameService validation)
+    public PageCrudService(IPageRepository repository, IValidationCreativeNameService validation, IBus bus, IRenderingPage renderingPage)
     {
         this.pageRepository = repository;
         this.validationService = validation;
+        this.bus = bus;
+        this.renderingPage = renderingPage;
     }
 
     public async Task<Page> Create(Page page)
@@ -18,6 +23,8 @@ public class PageCrudService : IPageCrudService
         await this.validationService.ValidationCreativeName(page);
 
         page = await this.pageRepository.Create(page);
+
+        await this.SendRenderedPage(page);
 
         return page;
     }
@@ -50,6 +57,8 @@ public class PageCrudService : IPageCrudService
 
         await this.pageRepository.SaveChanges();
 
+        await this.SendRenderedPage(current);
+
         return page;
     }
 
@@ -57,5 +66,11 @@ public class PageCrudService : IPageCrudService
     {
         var page = await this.pageRepository.Get(id);
         return page ?? throw new NotFoundException("Item not found");
+    }
+
+    private async Task SendRenderedPage(Page page)
+    {
+        var pageRendered = await this.renderingPage.RenderingPageContent(page);
+        await this.bus.Send(pageRendered);
     }
 }
