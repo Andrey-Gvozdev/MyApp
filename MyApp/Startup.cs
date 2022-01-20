@@ -6,8 +6,12 @@ using MyApp.Domain.Services;
 using MyApp.Domain.Services.CRUDServices;
 using MyApp.Middleware;
 using MyApp.Services;
+using Rebus.Config;
+using Rebus.Retry.Simple;
+using Rebus.Routing.TypeBased;
 
 namespace MyApp;
+
 public class Startup
 {
     public Startup(IConfiguration configuration)
@@ -29,6 +33,13 @@ public class Startup
         {
             options.EnableAnnotations();
         });
+
+        services.AddRebus(
+               rebus => rebus
+                  .Logging(l => l.Console())
+                  .Routing(r => r.TypeBased().Map<PageRendered>("renderedPage"))
+                  .Transport(t => t.UseRabbitMqAsOneWayClient("amqp://guest:guest@localhost:5672"))
+                  .Options(t => t.SimpleRetryStrategy(errorQueueAddress: "ErrorQueue")));
 
         services.AddTransient<ICreativeRepository, CreativeRepository>();
         services.AddTransient<IPageRepository, PageRepository>();

@@ -26,7 +26,7 @@ public class SnippetCrudService : ISnippetCrudService
     {
         var snippet = await this.GetSnippet(id);
 
-        this.isUseSnippetValidation.ValidationSnippet(snippet.Name);
+        await this.isUseSnippetValidation.ValidationSnippet(snippet.Name);
 
         await this.snippetRepository.Delete(snippet);
 
