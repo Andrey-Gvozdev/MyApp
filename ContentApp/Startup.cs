@@ -2,6 +2,9 @@
 using ContentApp.Infrastructure;
 using ContentApp.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using MyApp.Contracts;
+using Rebus.Config;
+using Rebus.Routing.TypeBased;
 
 namespace ContentApp;
 public class Startup
@@ -18,6 +21,16 @@ public class Startup
         services.AddDbContext<ContentAppDbContext>(options =>
             options.UseSqlServer(
                 this.Configuration.GetConnectionString("DefaultConnection")));
+
+        services.AddRebus(
+               rebus => rebus
+                  .Logging(l => l.Console())
+                  .Routing(x => x.TypeBased())
+                  .Transport(t => t.UseRabbitMq("amqp://guest:guest@localhost:5672", "renderedPage")));
+
+        services.AddHostedService<EventSubscriber>();
+
+        services.AutoRegisterHandlersFromAssemblyOf<PageCreatedHandler>();
 
         services.AddControllers();
 

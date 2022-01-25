@@ -1,4 +1,5 @@
-﻿using MyApp.Domain.CustomExceptions;
+﻿using MyApp.Contracts.Events;
+using MyApp.Domain.CustomExceptions;
 using MyApp.Domain.DomainModel;
 using Rebus.Bus;
 
@@ -59,7 +60,7 @@ public class PageCrudService : IPageCrudService
 
         await this.SendRenderedPage(current);
 
-        return page;
+        return current;
     }
 
     private async Task<Page> GetPage(int id)
@@ -71,6 +72,6 @@ public class PageCrudService : IPageCrudService
     private async Task SendRenderedPage(Page page)
     {
         var pageRendered = await this.renderingPage.RenderingPageContent(page);
-        await this.bus.Send(pageRendered);
+        await this.bus.Publish(new PageCreated(pageRendered.Id, pageRendered.Content));
     }
 }

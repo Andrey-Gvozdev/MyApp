@@ -54,6 +54,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\MyApp.Contracts\MyApp.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

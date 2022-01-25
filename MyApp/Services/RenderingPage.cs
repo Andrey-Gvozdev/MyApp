@@ -20,8 +20,14 @@ public class RenderingPage : IRenderingPage
         {
             var pattern = $"#SNIPPET.{item.SnippetName}#";
             var snippet = await this.snippetRepository.Get(item.SnippetName);
-
-            renderedContent = Regex.Replace(renderedContent, pattern, snippet.Content);
+            if (snippet != null)
+            {
+                renderedContent = Regex.Replace(renderedContent, pattern, snippet.Content);
+            }
+            else
+            {
+                renderedContent = Regex.Replace(renderedContent, pattern, string.Empty);
+            }
         }
 
         return new PageRendered(page.Id, renderedContent);

@@ -22,6 +22,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
+    <PackageReference Include="Rebus" Version="6.6.2" />
+    <PackageReference Include="Rebus.RabbitMq" Version="7.3.4" />
+    <PackageReference Include="Rebus.ServiceProvider" Version="7.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -30,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ContentApp.Domain\ContentApp.Domain.csproj" />
+    <ProjectReference Include="..\MyApp.Contracts\MyApp.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

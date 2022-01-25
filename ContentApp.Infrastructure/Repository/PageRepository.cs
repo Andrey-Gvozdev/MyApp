@@ -11,8 +11,8 @@ public class PageRepository : IPageRepository
         this.db = context;
     }
 
-    public Task<List<Page>> GetListAsync()
+    public async Task<List<Page>> GetListAsync()
     {
-        return this.db.Pages.AsNoTracking().ToListAsync();
+        return await this.db.Pages.AsNoTracking().ToListAsync();
     }
 }
