@@ -10,6 +10,11 @@ public class Page
     public Page(int pageId, string content)
     {
         this.PageId = pageId;
+        this.SetContent(content);
+    }
+
+    public void SetContent(string content)
+    {
         this.Content = content;
     }
 }

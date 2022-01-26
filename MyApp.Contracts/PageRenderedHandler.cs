@@ -14,7 +14,23 @@ public class PageRenderedHandler : IHandleMessages<PageRendered>
 
     public async Task Handle(PageRendered message)
     {
-        await this.pageRepository.AddRenderedPage(message.PageId, message.Content);
+        await this.HandleHelper(message);
+
         await Task.CompletedTask;
+    }
+
+    private async Task HandleHelper(PageRendered message)
+    {
+        var page = await pageRepository.Get(message.PageId);
+
+        if (page != null)
+        {
+            page.SetContent(message.Content);
+            await this.pageRepository.SaveChangesAsync();
+        }
+        else
+        {
+            await this.pageRepository.AddRenderedPage(message.PageId, message.Content);
+        }
     }
 }

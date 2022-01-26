@@ -19,6 +19,16 @@ public class PageRepository : IPageRepository
     public async Task AddRenderedPage(int pageId, string content)
     {
         await this.db.Pages.AddAsync(new Page(pageId, content));
-        await this.db.SaveChangesAsync();
+        await this.SaveChangesAsync();
+    }
+
+    public Task<Page> Get(int pageId)
+    {
+        return this.db.Pages.FirstOrDefaultAsync(x => x.PageId == pageId);
+    }
+
+    public Task SaveChangesAsync()
+    {
+        return this.db.SaveChangesAsync();
     }
 }
