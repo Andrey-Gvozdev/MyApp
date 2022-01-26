@@ -25,7 +25,7 @@ public class Startup
                rebus => rebus
                   .Logging(l => l.Console())
                   .Routing(x => x.TypeBased())
-                  .Transport(t => t.UseRabbitMq("amqp://guest:guest@localhost:5672", "renderedPage"))
+                  .Transport(t => t.UseRabbitMq(this.Configuration["ConnectionStrings:RabbitMqConnection"], this.Configuration["QueueRabbitMQ:ContentAppQueue"]))
                   .Options(c =>
                     {
                       c.SetNumberOfWorkers(1);

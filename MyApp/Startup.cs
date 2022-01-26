@@ -38,8 +38,8 @@ public class Startup
                rebus => rebus
                   .Logging(l => l.Console())
                   .Routing(r => r.TypeBased())
-                  .Transport(t => t.UseRabbitMqAsOneWayClient("amqp://guest:guest@localhost:5672"))
-                  .Options(t => t.SimpleRetryStrategy(errorQueueAddress: "ErrorQueue")));
+                  .Transport(t => t.UseRabbitMqAsOneWayClient(this.Configuration["ConnectionStrings:RabbitMqConnection"]))
+                  .Options(t => t.SimpleRetryStrategy(errorQueueAddress: "error")));
 
         services.AddTransient<ICreativeRepository, CreativeRepository>();
         services.AddTransient<IPageRepository, PageRepository>();

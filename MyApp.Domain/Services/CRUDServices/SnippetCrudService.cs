@@ -23,7 +23,7 @@ public class SnippetCrudService : ISnippetCrudService
 
         snippet = await this.snippetRepository.Create(snippet);
 
-        await this.senderRenderedPage.SendRenderedPages(await this.isUseSnippetValidation.SearchPagesIdWhereUsed(snippet.Name));
+        await this.senderRenderedPage.SendRenderedPages(await this.snippetRepository.SearchPagesIdWhereUsed(snippet.Name));
 
         return snippet;
     }
@@ -52,7 +52,7 @@ public class SnippetCrudService : ISnippetCrudService
 
         await this.snippetRepository.SaveChanges();
 
-        await this.senderRenderedPage.SendRenderedPages(await this.isUseSnippetValidation.SearchPagesIdWhereUsed(snippet.Name));
+        await this.senderRenderedPage.SendRenderedPages(await this.snippetRepository.SearchPagesIdWhereUsed(snippet.Name));
 
         return snippet;
     }
