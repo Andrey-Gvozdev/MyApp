@@ -23,20 +23,14 @@ namespace ContentApp.Infrastructure.Migrations
 
             modelBuilder.Entity("ContentApp.Domain.Page", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("PageId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("PageId");
 
                     b.ToTable("Pages");
                 });

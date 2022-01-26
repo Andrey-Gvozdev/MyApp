@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContentApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ContentAppDbContext))]
-    [Migration("20220117130938_start")]
+    [Migration("20220126130839_start")]
     partial class start
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,17 +25,14 @@ namespace ContentApp.Infrastructure.Migrations
 
             modelBuilder.Entity("ContentApp.Domain.Page", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("PageId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("PageId");
 
                     b.ToTable("Pages");
                 });

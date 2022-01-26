@@ -1,8 +1,6 @@
 ﻿namespace ContentApp.Domain;
 public class Page
 {
-    public int Id { get; private set; }
-
     public int PageId { get; private set; }
 
     public string Content { get; private set; }

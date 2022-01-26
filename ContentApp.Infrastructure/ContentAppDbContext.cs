@@ -13,6 +13,7 @@ public class ContentAppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Page>();
+        modelBuilder.Entity<Page>()
+            .Property(b => b.PageId).ValueGeneratedNever();
     }
 }
