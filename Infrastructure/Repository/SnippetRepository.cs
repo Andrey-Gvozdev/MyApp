@@ -49,4 +49,9 @@ public class SnippetRepository : ISnippetRepository
     {
         return this.db.Snippets.FirstOrDefaultAsync(x => x.Name == snippetName);
     }
+
+    public Task<List<int>> SearchPagesIdWhereUsed(string snippetName)
+    {
+        return this.GetRelatedPageIds(snippetName);
+    }
 }

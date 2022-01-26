@@ -12,14 +12,12 @@ public class PageRenderedHandler : IHandleMessages<PageRendered>
         this.pageRepository = pageRepository;
     }
 
-    public async Task Handle(PageRendered message)
+    public Task Handle(PageRendered message)
     {
-        await this.HandleHelper(message);
-
-        await Task.CompletedTask;
+        return this.CreateOrUpdatePage(message);
     }
 
-    private async Task HandleHelper(PageRendered message)
+    private async Task CreateOrUpdatePage(PageRendered message)
     {
         var page = await this.pageRepository.Get(message.PageId);
 

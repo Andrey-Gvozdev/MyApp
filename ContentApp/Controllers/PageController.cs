@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ContentApp.Controllers;
 [ApiController]
-[Route("api/page")]
+[Route("content/page")]
 [Produces("application/json")]
 public class PageController : Controller
 {
@@ -15,8 +15,8 @@ public class PageController : Controller
     }
 
     [HttpGet]
-    public Task<List<Page>> Get()
+    public Task<Page> Get(int id)
     {
-        return this.pageRepository.GetListAsync();
+        return this.pageRepository.Get(id);
     }
 }

@@ -14,4 +14,6 @@ public interface ISnippetRepository
     Task Delete(Snippet snippet);
 
     Task<List<int>> GetRelatedPageIds(string snippetName);
+
+    Task<List<int>> SearchPagesIdWhereUsed(string snippetName);
 }
