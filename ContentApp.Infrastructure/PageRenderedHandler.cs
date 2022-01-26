@@ -2,7 +2,7 @@
 using MyApp.Contracts.Events;
 using Rebus.Handlers;
 
-namespace MyApp.Contracts;
+namespace ContentApp.Infrastructure;
 public class PageRenderedHandler : IHandleMessages<PageRendered>
 {
     private readonly IPageRepository pageRepository;
@@ -21,7 +21,7 @@ public class PageRenderedHandler : IHandleMessages<PageRendered>
 
     private async Task HandleHelper(PageRendered message)
     {
-        var page = await pageRepository.Get(message.PageId);
+        var page = await this.pageRepository.Get(message.PageId);
 
         if (page != null)
         {
