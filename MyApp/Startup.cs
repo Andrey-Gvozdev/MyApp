@@ -49,6 +49,7 @@ public class Startup
         services.AddTransient<ISnippetCrudService, SnippetCrudService>();
         services.AddTransient<IIsUseSnippetValidation, IsUseSnippetValidation>();
         services.AddTransient<IRenderingPage, RenderingPage>();
+        services.AddTransient<ISenderRenderedPage, SenderRenderedPage>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

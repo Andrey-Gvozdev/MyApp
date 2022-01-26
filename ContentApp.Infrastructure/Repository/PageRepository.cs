@@ -15,4 +15,10 @@ public class PageRepository : IPageRepository
     {
         return await this.db.Pages.AsNoTracking().ToListAsync();
     }
+
+    public async Task AddRenderedPage(int pageId, string content)
+    {
+        await this.db.Pages.AddAsync(new Page(pageId, content));
+        await this.db.SaveChangesAsync();
+    }
 }

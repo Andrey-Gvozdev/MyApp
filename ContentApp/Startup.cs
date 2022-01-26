@@ -30,7 +30,7 @@ public class Startup
 
         services.AddHostedService<EventSubscriber>();
 
-        services.AutoRegisterHandlersFromAssemblyOf<PageCreatedHandler>();
+        services.AutoRegisterHandlersFromAssemblyOf<PageRenderedHandler>();
 
         services.AddControllers();
 
@@ -59,6 +59,8 @@ public class Startup
         app.UseStaticFiles();
 
         app.UseRouting();
+
+        app.ApplicationServices.UseRebus();
 
         app.UseEndpoints(endpoints =>
         {

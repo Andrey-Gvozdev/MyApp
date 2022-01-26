@@ -21,12 +21,8 @@ public class EventSubscriber : IHostedService
         return Task.CompletedTask;
     }
 
-    private async Task SubscribeEvents()
+    private Task SubscribeEvents()
     {
-        await Task.WhenAll(
-            this.bus.Subscribe<PageCreated>(),
-            this.bus.Subscribe<PageUpdated>(),
-            this.bus.Subscribe<SnippetCreated>(),
-            this.bus.Subscribe<SnippetUpdated>());
+        return this.bus.Subscribe<PageRendered>();
     }
 }

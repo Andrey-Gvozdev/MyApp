@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using MyApp.Contracts.Events;
 using MyApp.Domain.DomainModel;
 using MyApp.Domain.Services;
 
