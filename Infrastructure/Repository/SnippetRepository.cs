@@ -44,4 +44,14 @@ public class SnippetRepository : ISnippetRepository
     {
         return this.db.Pages.Where(x => x.PageSnippets.Any(x => x.SnippetName == snippetName)).Select(x => x.Id).ToListAsync();
     }
+
+    public Task<Snippet> Get(string snippetName)
+    {
+        return this.db.Snippets.FirstOrDefaultAsync(x => x.Name == snippetName);
+    }
+
+    public Task<List<int>> SearchPagesIdWhereUsed(string snippetName)
+    {
+        return this.GetRelatedPageIds(snippetName);
+    }
 }

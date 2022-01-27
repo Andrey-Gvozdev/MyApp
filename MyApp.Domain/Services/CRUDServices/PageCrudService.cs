@@ -6,11 +6,13 @@ public class PageCrudService : IPageCrudService
 {
     private readonly IPageRepository pageRepository;
     private readonly IValidationCreativeNameService validationService;
+    private readonly ISenderRenderedPage senderRenderedPage;
 
-    public PageCrudService(IPageRepository repository, IValidationCreativeNameService validation)
+    public PageCrudService(IPageRepository repository, IValidationCreativeNameService validation, ISenderRenderedPage senderRenderedPage)
     {
         this.pageRepository = repository;
         this.validationService = validation;
+        this.senderRenderedPage = senderRenderedPage;
     }
 
     public async Task<Page> Create(Page page)
@@ -18,6 +20,8 @@ public class PageCrudService : IPageCrudService
         await this.validationService.ValidationCreativeName(page);
 
         page = await this.pageRepository.Create(page);
+
+        await this.senderRenderedPage.SendRenderedPage(page);
 
         return page;
     }
@@ -50,7 +54,9 @@ public class PageCrudService : IPageCrudService
 
         await this.pageRepository.SaveChanges();
 
-        return page;
+        await this.senderRenderedPage.SendRenderedPage(current);
+
+        return current;
     }
 
     private async Task<Page> GetPage(int id)

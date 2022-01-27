@@ -6,8 +6,12 @@ using MyApp.Domain.Services;
 using MyApp.Domain.Services.CRUDServices;
 using MyApp.Middleware;
 using MyApp.Services;
+using Rebus.Config;
+using Rebus.Retry.Simple;
+using Rebus.Routing.TypeBased;
 
 namespace MyApp;
+
 public class Startup
 {
     public Startup(IConfiguration configuration)
@@ -30,6 +34,13 @@ public class Startup
             options.EnableAnnotations();
         });
 
+        services.AddRebus(
+               rebus => rebus
+                  .Logging(l => l.Console())
+                  .Routing(r => r.TypeBased())
+                  .Transport(t => t.UseRabbitMqAsOneWayClient(this.Configuration["ConnectionStrings:RabbitMqConnection"]))
+                  .Options(t => t.SimpleRetryStrategy(errorQueueAddress: "error")));
+
         services.AddTransient<ICreativeRepository, CreativeRepository>();
         services.AddTransient<IPageRepository, PageRepository>();
         services.AddTransient<IPageCrudService, PageCrudService>();
@@ -37,6 +48,8 @@ public class Startup
         services.AddTransient<ISnippetRepository, SnippetRepository>();
         services.AddTransient<ISnippetCrudService, SnippetCrudService>();
         services.AddTransient<IIsUseSnippetValidation, IsUseSnippetValidation>();
+        services.AddTransient<IRenderingPage, RenderingPage>();
+        services.AddTransient<ISenderRenderedPage, SenderRenderedPage>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

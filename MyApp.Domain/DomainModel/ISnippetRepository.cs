@@ -7,9 +7,13 @@ public interface ISnippetRepository
 
     Task<Snippet> Get(int snippetId);
 
+    Task<Snippet> Get(string snippetName);
+
     Task SaveChanges();
 
     Task Delete(Snippet snippet);
 
     Task<List<int>> GetRelatedPageIds(string snippetName);
+
+    Task<List<int>> SearchPagesIdWhereUsed(string snippetName);
 }

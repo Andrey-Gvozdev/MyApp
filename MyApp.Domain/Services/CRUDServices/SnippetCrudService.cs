@@ -7,26 +7,32 @@ public class SnippetCrudService : ISnippetCrudService
     private readonly ISnippetRepository snippetRepository;
     private readonly IValidationCreativeNameService validationService;
     private readonly IIsUseSnippetValidation isUseSnippetValidation;
+    private readonly ISenderRenderedPage senderRenderedPage;
 
-    public SnippetCrudService(ISnippetRepository repository, IValidationCreativeNameService validation, IIsUseSnippetValidation isUseSnippet)
+    public SnippetCrudService(ISnippetRepository repository, IValidationCreativeNameService validation, IIsUseSnippetValidation isUseSnippet, ISenderRenderedPage senderRenderedPage)
     {
         this.snippetRepository = repository;
         this.validationService = validation;
         this.isUseSnippetValidation = isUseSnippet;
+        this.senderRenderedPage = senderRenderedPage;
     }
 
     public async Task<Snippet> Create(Snippet snippet)
     {
         await this.validationService.ValidationCreativeName(snippet);
 
-        return await this.snippetRepository.Create(snippet);
+        snippet = await this.snippetRepository.Create(snippet);
+
+        await this.senderRenderedPage.SendRenderedPages(await this.snippetRepository.SearchPagesIdWhereUsed(snippet.Name));
+
+        return snippet;
     }
 
     public async Task<Snippet> Delete(int id)
     {
         var snippet = await this.GetSnippet(id);
 
-        this.isUseSnippetValidation.ValidationSnippet(snippet.Name);
+        await this.isUseSnippetValidation.ValidationSnippet(snippet.Name);
 
         await this.snippetRepository.Delete(snippet);
 
@@ -40,13 +46,15 @@ public class SnippetCrudService : ISnippetCrudService
 
     public async Task<Snippet> Update(int id, string content)
     {
-        var current = await this.GetSnippet(id);
+        var snippet = await this.GetSnippet(id);
 
-        current.SetContent(content);
+        snippet.SetContent(content);
 
         await this.snippetRepository.SaveChanges();
 
-        return current;
+        await this.senderRenderedPage.SendRenderedPages(await this.snippetRepository.SearchPagesIdWhereUsed(snippet.Name));
+
+        return snippet;
     }
 
     private async Task<Snippet> GetSnippet(int id)
