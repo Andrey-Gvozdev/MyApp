@@ -9,6 +9,7 @@ public class ContentAppDbContext : DbContext
     public ContentAppDbContext(DbContextOptions<ContentAppDbContext> options)
         : base(options)
     {
+        this.Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

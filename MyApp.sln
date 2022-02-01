@@ -20,7 +20,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentApp.Domain", "Conten
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentApp.Infrastructure", "ContentApp.Infrastructure\ContentApp.Infrastructure.csproj", "{47119C2E-73AC-4119-A92E-0269C521A40F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Contracts", "MyApp.Contracts\MyApp.Contracts.csproj", "{6D9BA75F-BD65-4E43-B807-0F9384130DEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Contracts", "MyApp.Contracts\MyApp.Contracts.csproj", "{6D9BA75F-BD65-4E43-B807-0F9384130DEC}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2AF6B0A9-CA0E-4DBB-8C4A-DDCA9C804972}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +62,10 @@ Global
 		{6D9BA75F-BD65-4E43-B807-0F9384130DEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D9BA75F-BD65-4E43-B807-0F9384130DEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D9BA75F-BD65-4E43-B807-0F9384130DEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AF6B0A9-CA0E-4DBB-8C4A-DDCA9C804972}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AF6B0A9-CA0E-4DBB-8C4A-DDCA9C804972}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AF6B0A9-CA0E-4DBB-8C4A-DDCA9C804972}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AF6B0A9-CA0E-4DBB-8C4A-DDCA9C804972}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
