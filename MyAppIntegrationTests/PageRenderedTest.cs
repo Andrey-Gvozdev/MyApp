@@ -6,7 +6,6 @@ using Moq;
 using MyApp.Contracts.Events;
 using MyApp.Domain.DomainModel;
 using Newtonsoft.Json;
-using Rebus.Bus;
 using Xunit;
 
 namespace MyAppIntegrationTests;

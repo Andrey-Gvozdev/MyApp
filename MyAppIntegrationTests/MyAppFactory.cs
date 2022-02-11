@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using MyApp;
-using MyApp.Contracts.Events;
 using Rebus.Bus;
 
 namespace MyAppIntegrationTests;
