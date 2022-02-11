@@ -24,11 +24,8 @@ public class PageRenderedTest : IntegrationTest
         var testPageJson = JsonConvert.SerializeObject(new Page("testName", "testContent"));
         postRequest.Content = new StringContent(testPageJson, Encoding.UTF8, "application/json");
 
-        var mockBus = new Mock<IBus>();
-        mockBus.Setup(x => x.Publish(It.Is<PageRendered>(message => message.Content == expectedContent), null));
-
         await client.SendAsync(postRequest);
 
-        mockBus.Verify();
+        mockBus.Verify(x => x.Publish(It.Is<PageRendered>(e => e.Content == expectedContent), null), Times.Once);
     }
 }

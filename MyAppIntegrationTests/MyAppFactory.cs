@@ -5,13 +5,18 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using MyApp;
+using MyApp.Contracts.Events;
+using Rebus.Bus;
 
 namespace MyAppIntegrationTests;
 public class MyAppFactory
         : WebApplicationFactory<Startup>
 {
     IConfiguration Configuration { get; set; }
+    
+    public Mock<IBus> mockBus = new();
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>
@@ -24,6 +29,8 @@ public class MyAppFactory
             {
                 services.Remove(descriptor);
             }
+
+            services.AddSingleton(mockBus.Object);
 
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseInMemoryDatabase("InMemoryDbForTesting"));
