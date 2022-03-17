@@ -4,7 +4,7 @@ using MyApp.Domain.Services.CRUDServices;
 
 namespace MyApp.Controllers;
 [ApiController]
-[Route("api/snippet")]
+[Route("/snippet/")]
 [Produces("application/json")]
 public class SnippetController : Controller
 {

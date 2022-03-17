@@ -13,12 +13,13 @@ export default function PageUpdate(){
     const location = useLocation();
 
     useEffect(() => {
-        fetch("/api/page/get/" + location.state.id)
+        fetch("/page/get/" + location.state.id)
             .then(responce => { return responce.json();})
             .then((page) => {
                 setNameValue(page.name);
                 setContentValue(page.content);
             });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     function filingNewPage()
@@ -29,7 +30,7 @@ export default function PageUpdate(){
 
     function putRequest(){
         filingNewPage();
-        fetch("/api/page/put/" + location.state.id, {
+        fetch("/page/put/" + location.state.id, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
@@ -37,7 +38,7 @@ export default function PageUpdate(){
             body: JSON.stringify(newPage)
         })
             .then(function(res){ return res.json(); })
-            .then(function(data){ alert(JSON.stringify(data)); goBack('/api/page/'); })
+            .then(function(data){ alert(JSON.stringify(data)); goBack('/page/'); })
     }
 
     return(
@@ -53,7 +54,7 @@ export default function PageUpdate(){
             </Form.Group>
 
             <Button variant='outline-primary' onClick={() => putRequest()}>Update</Button>
-            <Button variant='outline-primary' onClick={() => goBack('/api/page/')}>Back</Button>
+            <Button variant='outline-primary' onClick={() => goBack('/page/')}>Back</Button>
         </Form>
     )
 }

@@ -16,10 +16,10 @@ export default function Navigation(){
                 <LinkContainer to="/">
                     <Nav.Link>Home</Nav.Link>
                 </LinkContainer>
-                <LinkContainer to="/api/page/">
+                <LinkContainer to="/page/">
                     <Nav.Link>Page</Nav.Link>
                 </LinkContainer>
-                <LinkContainer to="/api/snippet/">
+                <LinkContainer to="/snippet/">
                     <Nav.Link>Snippet</Nav.Link>
                 </LinkContainer>
                 </Nav>

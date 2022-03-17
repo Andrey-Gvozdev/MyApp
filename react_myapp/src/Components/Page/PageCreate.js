@@ -19,7 +19,7 @@ export default function PageCreate(){
 
     function postRequest(){
         filingNewPage();
-        fetch("/api/page/post/", {
+        fetch("/page/post/", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
@@ -27,7 +27,7 @@ export default function PageCreate(){
             body: JSON.stringify(newPage)
         })
             .then(function(res){ return res.json(); })
-            .then(function(data){ alert(JSON.stringify(data)); goBack('/api/page/'); })
+            .then(function(data){ alert(JSON.stringify(data)); goBack('/page/'); })
     }
 
     return(
@@ -43,7 +43,7 @@ export default function PageCreate(){
             </Form.Group>
 
             <Button variant='outline-primary' onClick={() => postRequest()}>Create</Button>
-            <Button variant='outline-primary' onClick={() => goBack('/api/page/')}>Back</Button>
+            <Button variant='outline-primary' onClick={() => goBack('/page/')}>Back</Button>
         </Form>
     )
 }

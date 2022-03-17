@@ -1,62 +1,55 @@
 import React, {useEffect, useState} from 'react';
-import {Button} from 'react-bootstrap';
+import {Button, Table} from 'react-bootstrap';
 import PageDelete from './PageDelete';
 import {useNavigate} from 'react-router-dom';
 
 export default function Page(){
-    let [isPageGeted, setIsPageGeted] = useState(false);
-    let [pageDeletedTriger, setPageDeleted] = useState(true);
-    let [page, setPage] = useState({});
     let [items, setItems] = useState([]);
     const goPageCreate = useNavigate();
 
     useEffect(() => {
-        console.log(pageDeletedTriger)
-        fetch("/api/page/get")
+        fetch("/page/get/")
             .then(responce => { return responce.json();})
             .then((pages) => {
                 setItems(pages);
             });
-    }, [pageDeletedTriger])
-    
-    function getPage(item){
-        setIsPageGeted(true);
-        setPage(item);
-    }
-
-    function closePage(){
-        setIsPageGeted(false);
-        setPage(null);
-    }
+    }, [])
 
     function pageDeleted(id)
     {
-        setPageDeleted(prev => !prev);
+        setItems(items.filter(item => {
+            if (item.id !== id) {
+                return item;
+            }
+            else return alert('Item deleted');
+        }));
         PageDelete(id);
     }
 
-    if(!isPageGeted) return (
+    return (
         <div>
-            <Button variant='outline-success' size='sm' onClick={() => goPageCreate('/api/page/create/')}>Create new page</Button>
-            <ul>
-            {items.map(item =>
-                <li key={item.id}>
-                <div>{item.name}: {item.content}
-                    <Button variant='outline-primary' size='sm' onClick={() => getPage(item)}>Watch</Button>
-                    <Button variant='outline-warning' size='sm' onClick={() => goPageCreate('/api/page/update/', {state:{id: item.id}})}>Update</Button>
-                    <Button variant='outline-danger' size='sm' onClick={() => pageDeleted(item.id)}>Delete</Button>
-                </div>
-                </li>
-            )}
-            </ul>
+            <Button variant='success' size='sm' onClick={() => goPageCreate('/page/create/')}>Create new page</Button>
+            <Table striped bordered hover size="sm">
+                <thead>
+                    <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Content</th>
+                    </tr>
+                </thead>
+                {items.map(item =>
+                <tbody key={item.id}>
+                    <tr>
+                    <td>{item.id}</td>
+                    <td>{item.name}</td>
+                    <td>{item.content}</td>
+                    <td>
+                        <Button variant='primary' size='sm' onClick={() => goPageCreate('/page/update/', {state:{id: item.id}})}>Update</Button>
+                        <Button variant='danger' size='sm' onClick={() => pageDeleted(item.id)}>Delete</Button>
+                    </td>
+                    </tr>
+                </tbody>)}
+            </Table>
         </div>
     );
-    else return (
-            <div>
-                <p><b>Id:</b> {page.id}</p>
-                <p><b>Name:</b> {page.name}</p>
-                <p><b>Content:</b> {page.content}</p>
-                <p><Button variant='outline-primary' size='sm' onClick={() => closePage()}>Back</Button></p>
-            </div>
-        );
 }

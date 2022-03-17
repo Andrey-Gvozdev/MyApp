@@ -19,35 +19,35 @@ public class PageController : Controller
     }
 
     [HttpGet]
-    [Route("/api/page/get/")]
+    [Route("/page/get/")]
     public Task<List<Page>> Get()
     {
         return this.pageRepository.GetListAsync();
     }
 
     [HttpPost]
-    [Route("/api/page/post/")]
+    [Route("/page/post/")]
     public Task<Page> Post(Page page)
     {
         return this.pageCrudService.Create(page);
     }
 
     [HttpGet]
-    [Route("/api/page/get/{pageId}/")]
+    [Route("/page/get/{pageId}/")]
     public Task<Page> Get(int pageId)
     {
         return this.pageCrudService.GetById(pageId);
     }
 
     [HttpDelete]
-    [Route("/api/page/delete/{pageId}")]
+    [Route("/page/delete/{pageId}")]
     public Task<Page> Delete(int pageId)
     {
         return this.pageCrudService.Delete(pageId);
     }
 
     [HttpPut]
-    [Route("/api/page/put/{pageId}")]
+    [Route("/page/put/{pageId}")]
     public Task<Page> Put(int pageId, Page page)
     {
         return this.pageCrudService.Update(pageId, page);

@@ -12,11 +12,11 @@ function App() {
     <div>
       <Navigation/>
         <Routes>
-          <Route path='/api/page/create/' element={<PageCreate/>}/>
-          <Route path='/api/page/update/' element={<PageUpdate/>}/>
+          <Route path='/page/create/' element={<PageCreate/>}/>
+          <Route path='/page/update/' element={<PageUpdate/>}/>
           <Route path='/' element={<Home/>}/>
-          <Route path='/api/page/' element={<Page/>}/>
-          <Route path='/api/snippet/' element={<Snippet/>}/>
+          <Route path='/page/' element={<Page/>}/>
+          <Route path='/snippet/' element={<Snippet/>}/>
         </Routes>
     </div>
   );
