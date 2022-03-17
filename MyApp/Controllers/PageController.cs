@@ -25,28 +25,24 @@ public class PageController : Controller
     }
 
     [HttpPost]
-    [Route("/page/post/")]
     public Task<Page> Post(Page page)
     {
         return this.pageCrudService.Create(page);
     }
 
-    [HttpGet]
-    [Route("/page/get/{pageId}/")]
+    [HttpGet("{pageId}")]
     public Task<Page> Get(int pageId)
     {
         return this.pageCrudService.GetById(pageId);
     }
 
-    [HttpDelete]
-    [Route("/page/delete/{pageId}")]
+    [HttpDelete("{pageId}")]
     public Task<Page> Delete(int pageId)
     {
         return this.pageCrudService.Delete(pageId);
     }
 
-    [HttpPut]
-    [Route("/page/put/{pageId}")]
+    [HttpPut("{pageId}")]
     public Task<Page> Put(int pageId, Page page)
     {
         return this.pageCrudService.Update(pageId, page);

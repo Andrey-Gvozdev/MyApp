@@ -11,8 +11,8 @@ function App() {
     <div>
       <Navigation/>
         <Routes>
-          <Route path='/page/post/' element={<PageCRU/>}/>
-          <Route path='/page/put/:id/' element={<PageCRU/>}/>
+          <Route path='/page/create/' element={<PageCRU/>}/>
+          <Route path='/page/update/:id/' element={<PageCRU/>}/>
           <Route path='/' element={<Home/>}/>
           <Route path='/page/' element={<Page/>}/>
           <Route path='/snippet/' element={<Snippet/>}/>

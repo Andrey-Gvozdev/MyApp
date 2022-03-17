@@ -12,10 +12,10 @@ export default function PageCRU(){
     const goBack = useNavigate();
     const params = useParams();
     const prodId = params.id;
-    
+
     useEffect(() => {
         if(prodId !== undefined){
-        fetch("/page/get/" + prodId)
+        fetch("/page/" + prodId)
             .then(responce => { return responce.json();})
             .then((page) => {
                 setNameValue(page.name);
@@ -33,7 +33,7 @@ export default function PageCRU(){
 
     function request(){
         filingNewPage();
-        fetch((prodId !== undefined) ? "/page/put/" + prodId :  "/page/post/", {
+        fetch((prodId !== undefined) ? "/page/" + prodId :  "/page/", {
             method: (prodId !== undefined) ? "PUT" :  "POST",
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
