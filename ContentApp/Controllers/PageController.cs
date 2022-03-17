@@ -14,7 +14,7 @@ public class PageController : Controller
         this.pageRepository = pageRepository;
     }
 
-    [HttpGet]
+    [HttpGet("{id}")]
     public Task<Page> Get(int id)
     {
         return this.pageRepository.Get(id);

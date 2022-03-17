@@ -5,7 +5,7 @@ using MyApp.Domain.Services.CRUDServices;
 namespace MyApp.Controllers;
 
 [ApiController]
-[Route("api/page")]
+[Route("/page/")]
 [Produces("application/json")]
 public class PageController : Controller
 {
@@ -36,13 +36,13 @@ public class PageController : Controller
         return this.pageCrudService.GetById(pageId);
     }
 
-    [HttpDelete]
+    [HttpDelete("{pageId}")]
     public Task<Page> Delete(int pageId)
     {
         return this.pageCrudService.Delete(pageId);
     }
 
-    [HttpPut]
+    [HttpPut("{pageId}")]
     public Task<Page> Put(int pageId, Page page)
     {
         return this.pageCrudService.Update(pageId, page);
