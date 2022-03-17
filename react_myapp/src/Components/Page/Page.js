@@ -8,7 +8,7 @@ export default function Page(){
     const goPageCRU = useNavigate();
 
     useEffect(() => {
-        fetch("/page/get/")
+        fetch("/page/")
             .then(responce => { return responce.json();})
             .then((pages) => {
                 setItems(pages);

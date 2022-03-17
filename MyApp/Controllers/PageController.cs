@@ -5,7 +5,7 @@ using MyApp.Domain.Services.CRUDServices;
 namespace MyApp.Controllers;
 
 [ApiController]
-[Route("api/page")]
+[Route("/page/")]
 [Produces("application/json")]
 public class PageController : Controller
 {
@@ -19,7 +19,6 @@ public class PageController : Controller
     }
 
     [HttpGet]
-    [Route("/page/get/")]
     public Task<List<Page>> Get()
     {
         return this.pageRepository.GetListAsync();
