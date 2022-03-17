@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom';
 
 export default function Page(){
     let [items, setItems] = useState([]);
-    const goPageCreate = useNavigate();
+    const goPageCRU = useNavigate();
 
     useEffect(() => {
         fetch("/page/get/")
@@ -28,7 +28,7 @@ export default function Page(){
 
     return (
         <div>
-            <Button variant='success' size='sm' onClick={() => goPageCreate('/page/create/')}>Create new page</Button>
+            <Button variant='success' size='sm' onClick={() => goPageCRU('/page/post/')}>Create new page</Button>
             <Table striped bordered hover size="sm">
                 <thead>
                     <tr>
@@ -44,7 +44,7 @@ export default function Page(){
                     <td>{item.name}</td>
                     <td>{item.content}</td>
                     <td>
-                        <Button variant='primary' size='sm' onClick={() => goPageCreate('/page/update/', {state:{id: item.id}})}>Update</Button>
+                        <Button variant='primary' size='sm' onClick={() => goPageCRU('/page/put/' + item.id)}>Update</Button>
                         <Button variant='danger' size='sm' onClick={() => pageDeleted(item.id)}>Delete</Button>
                     </td>
                     </tr>
