@@ -12,12 +12,10 @@ export default function PageCRU(){
     const goBack = useNavigate();
     const params = useParams();
     const prodId = params.id;
-    let url = '';
-
+    
     useEffect(() => {
-        setUrl();
         if(prodId !== undefined){
-        fetch(url)
+        fetch("/page/get/" + prodId)
             .then(responce => { return responce.json();})
             .then((page) => {
                 setNameValue(page.name);
@@ -27,10 +25,6 @@ export default function PageCRU(){
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    function setUrl(){
-        url = (prodId !== undefined) ? "/page/get/" + prodId :  "/page/get/";
-    }
-
     function filingNewPage()
     {
         newPage.content = contentValue;
@@ -39,7 +33,7 @@ export default function PageCRU(){
 
     function request(){
         filingNewPage();
-        fetch(url, {
+        fetch((prodId !== undefined) ? "/page/put/" + prodId :  "/page/post/", {
             method: (prodId !== undefined) ? "PUT" :  "POST",
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
