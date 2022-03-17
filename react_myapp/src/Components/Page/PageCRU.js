@@ -28,7 +28,7 @@ export default function PageCRU(){
     }, []);
 
     function setUrl(){
-        url = (prodId !== null) ? "/page/get/" + prodId :  "/page/get/";
+        url = (prodId !== undefined) ? "/page/get/" + prodId :  "/page/get/";
     }
 
     function filingNewPage()
@@ -37,23 +37,10 @@ export default function PageCRU(){
         newPage.name = nameValue;
     }
 
-    function putRequest(){
+    function request(){
         filingNewPage();
         fetch(url, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(newPage)
-        })
-            .then(function(res){ return res.json(); })
-            .then(function(data){ alert(JSON.stringify(data)); goBack('/page/'); })
-    }
-
-    function postRequest(){
-        filingNewPage();
-        fetch(url, {
-            method: 'POST',
+            method: (prodId !== undefined) ? "PUT" :  "POST",
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
             },
@@ -75,8 +62,8 @@ export default function PageCRU(){
                 <p><textarea className="form-control" rows="8" value={contentValue} onChange={e => setContentValue(e.target.value)}></textarea></p>
             </Form.Group>
         {prodId !== undefined 
-        ? <Button variant='outline-primary' onClick={() => putRequest()}>Update</Button>
-        : <Button variant='outline-primary' onClick={() => postRequest()}>Create</Button>}
+        ? <Button variant='outline-primary' onClick={() => request()}>Update</Button>
+        : <Button variant='outline-primary' onClick={() => request()}>Create</Button>}
             <Button variant='outline-primary' onClick={() => goBack('/page/')}>Back</Button>
         </Form>
     )
