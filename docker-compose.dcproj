@@ -5,8 +5,10 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>2af6b0a9-ca0e-4dbb-8c4a-ddca9c804972</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>myapp</DockerServiceName>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/index.html</DockerServiceUrl>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DockerServiceName>clientapp</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

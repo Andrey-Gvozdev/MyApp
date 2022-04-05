@@ -21,20 +21,16 @@ public class Startup
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddReact();
         services.AddJsEngineSwitcher(options => options.DefaultEngineName = ChakraCoreJsEngine.EngineName).AddChakraCore();
+
+        services.AddMvc();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-            app.UseBrowserLink();
-        }
-
         app.UseReact(config =>
         {
             config
-              .AddScript("~/js/main.5ca9131f.js")
+              .AddScript("~/js/main.*.js")
               .SetJsonSerializerSettings(new JsonSerializerSettings
               {
                   StringEscapeHandling = StringEscapeHandling.EscapeHtml,
@@ -49,9 +45,9 @@ public class Startup
 
         app.UseRouting();
 
-/*        app.UseEndpoints(endpoints =>
+        app.UseEndpoints(endpoints =>
         {
-            endpoints.MapControllers();
-        });*/
+            endpoints.MapControllerRoute("default", "/{controller=Home}/{action=Index}/");
+        });
     }
 }

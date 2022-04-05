@@ -21,6 +21,7 @@ public class RenderingPage : IRenderingPage
         {
             var pattern = $"#SNIPPET.{item.SnippetName}#";
             var snippet = await this.snippetRepository.Get(item.SnippetName);
+
             if (snippet != null)
             {
                 renderedContent = Regex.Replace(renderedContent, pattern, snippet.Content);

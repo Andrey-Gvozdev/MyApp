@@ -45,23 +45,24 @@ public class PageCrudService : IPageCrudService
     public async Task<Page> Update(int id, Page page)
     {
         page.Id = id;
-        var current = await this.GetPage(id);
+        var pageUpdated = await this.GetPage(id);
 
         await this.validationService.ValidationCreativeName(page);
 
-        current.SetName(page.Name);
-        current.SetContent(page.Content);
+        pageUpdated.SetName(page.Name);
+        pageUpdated.SetContent(page.Content);
 
         await this.pageRepository.SaveChanges();
 
-        await this.senderRenderedPage.SendRenderedPage(current);
+        await this.senderRenderedPage.SendRenderedPage(pageUpdated);
 
-        return current;
+        return pageUpdated;
     }
 
     private async Task<Page> GetPage(int id)
     {
         var page = await this.pageRepository.Get(id);
+
         return page ?? throw new NotFoundException("Item not found");
     }
 }

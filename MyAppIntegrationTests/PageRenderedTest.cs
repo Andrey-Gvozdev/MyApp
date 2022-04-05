@@ -20,7 +20,7 @@ public class PageRenderedTest : IntegrationTest
     public async Task TriggeredPageRenderedEvent()
     {
         string expectedContent = "<!DOCTYPE html>\n<html>\n<head></head>\n<body>\ntestContent\n</body>\n</html>";
-        var postRequest = new HttpRequestMessage(HttpMethod.Post, "/api/page/");
+        var postRequest = new HttpRequestMessage(HttpMethod.Post, "/page/");
         var testPageJson = JsonConvert.SerializeObject(new Page("testName", "testContent"));
         postRequest.Content = new StringContent(testPageJson, Encoding.UTF8, "application/json");
 
@@ -34,13 +34,13 @@ public class PageRenderedTest : IntegrationTest
     {
         var expectedPage = new Page("expectedName", "content");
         var testPageJson = JsonConvert.SerializeObject(expectedPage);
-        var postRequest = new HttpRequestMessage(HttpMethod.Post, "/api/page/")
+        var postRequest = new HttpRequestMessage(HttpMethod.Post, "/page/")
         {
             Content = new StringContent(testPageJson, Encoding.UTF8, "application/json")
         };
         var postResponce = await client.SendAsync(postRequest);
         var postResult = JsonConvert.DeserializeObject<Page>(await postResponce.Content.ReadAsStringAsync());
-        var getRequest = new HttpRequestMessage(HttpMethod.Get, $"/api/page/{postResult.Id}")
+        var getRequest = new HttpRequestMessage(HttpMethod.Get, $"/page/{postResult.Id}")
         {
             Content = new StringContent(postResult.Id.ToString(), Encoding.UTF8, "application/json")
         };
